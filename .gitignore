@@ -2,3 +2,6 @@
 build
 # VSCode directory
 .vscode
+# clangd
+.cache
+.clang*
