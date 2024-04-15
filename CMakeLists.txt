@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.23)
 
-set(project "sfml-platformer")
+set(project "sfml-portal-2d")
 project(${project})
 
 set(CMAKE_CXX_STANDARD 20)
