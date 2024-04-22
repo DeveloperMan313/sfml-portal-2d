@@ -5,8 +5,10 @@ project(${project})
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory(logic)
-add_subdirectory(graphics)
+add_subdirectory(Logic)
+add_subdirectory(Graphics)
+add_subdirectory(Sprite)
+add_subdirectory(RigidBody)
 
 add_executable(${project} main.cpp)
 
@@ -17,8 +19,15 @@ find_package(
   COMPONENTS window graphics system
   REQUIRED)
 
-target_link_libraries(${project} sfml-window sfml-graphics sfml-system
-                      game-logic game-graphics)
+target_link_libraries(
+  ${project}
+  sfml-window
+  sfml-graphics
+  sfml-system
+  game-logic
+  game-graphics
+  game-sprite
+  game-rigidbody)
 
 if(NOT WIN32)
   target_link_libraries(${project} m)
