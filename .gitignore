@@ -2,6 +2,9 @@
 build
 # VSCode directory
 .vscode
+# Visual Studio
+.vs
+CMakeSettings.json
 # clangd
 .cache
 .clang*
