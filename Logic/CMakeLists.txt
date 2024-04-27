@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.23)
 
-set(project "game-logic")
-project(${project})
+set(PROJECT "game-logic")
+project(${PROJECT})
 
-set(${project}_SOURCES Logic.cpp)
+set(${PROJECT}_SOURCES Logic.cpp)
 
-set(${project}_HEADERS Logic.hpp)
+set(${PROJECT}_HEADERS Logic.hpp)
 
-set(${project}_SOURCE_LIST ${${project}_SOURCES} ${${project}_HEADERS})
+set(${PROJECT}_SOURCE_LIST ${${PROJECT}_SOURCES} ${${PROJECT}_HEADERS})
 
-add_library(${project} STATIC ${${project}_SOURCE_LIST})
+add_library(${PROJECT} STATIC ${${PROJECT}_SOURCE_LIST})

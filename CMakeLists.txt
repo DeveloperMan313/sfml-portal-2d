@@ -1,16 +1,19 @@
 cmake_minimum_required(VERSION 3.23)
 
-set(project "sfml-portal-2d")
-project(${project})
+set(PROJECT "sfml-portal-2d")
+project(${PROJECT})
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_subdirectory(Logic)
-add_subdirectory(Graphics)
-add_subdirectory(Sprite)
-add_subdirectory(RigidBody)
+set(PROJECT_DIRS Logic Graphics Sprite RigidBody)
 
-add_executable(${project} main.cpp)
+foreach(PROJECT_DIR IN LISTS PROJECT_DIRS)
+  add_subdirectory(${PROJECT_DIR})
+endforeach()
+
+include_directories(${PROJECT_DIRS})
+
+add_executable(${PROJECT} main.cpp)
 
 set(SFML_STATIC_LIBRARIES TRUE)
 
@@ -19,16 +22,15 @@ find_package(
   COMPONENTS window graphics system
   REQUIRED)
 
-target_link_libraries(
-  ${project}
-  sfml-window
-  sfml-graphics
-  sfml-system
-  game-logic
-  game-graphics
-  game-sprite
-  game-rigidbody)
+set(GAME_COMPONENTS game-logic game-graphics game-sprite game-rigidbody)
 
-if(NOT WIN32)
-  target_link_libraries(${project} m)
-endif()
+set(SFML_COMPONENTS sfml-window sfml-graphics sfml-system)
+
+foreach(PROJECT_COMPONENT IN LISTS GAME_COMPONENTS COMPONENTS PROJECT)
+  target_link_libraries(${PROJECT_COMPONENT} ${SFML_COMPONENTS})
+  if(NOT WIN32)
+    target_link_libraries(${PROJECT_COMPONENT} m)
+  endif()
+endforeach()
+
+target_link_libraries(${PROJECT} ${GAME_COMPONENTS})
