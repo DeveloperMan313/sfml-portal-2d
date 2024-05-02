@@ -5,7 +5,7 @@ project(${PROJECT})
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(PROJECT_DIRS Logic Graphics Sprite RigidBody)
+set(PROJECT_DIRS Logic Graphics Sprite RigidBody Textures)
 
 foreach(PROJECT_DIR IN LISTS PROJECT_DIRS)
   add_subdirectory(${PROJECT_DIR})
@@ -22,7 +22,7 @@ find_package(
   COMPONENTS window graphics system
   REQUIRED)
 
-set(GAME_COMPONENTS game-logic game-graphics game-sprite game-rigidbody)
+set(GAME_COMPONENTS game-logic game-graphics game-sprite game-rigidbody game-textures)
 
 set(SFML_COMPONENTS sfml-window sfml-graphics sfml-system)
 
