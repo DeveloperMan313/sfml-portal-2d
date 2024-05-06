@@ -1,23 +1,23 @@
 #pragma once
 
-#include <vector>
 #include "../Sprite/Sprite.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
+#include <vector>
 
 namespace game {
 
-	class Graphics {
-	public:
-		Graphics();
+class Graphics {
+public:
+  Graphics();
 
-		~Graphics();
+  ~Graphics();
 
-		std::vector<Sprite*> sprites;
+  std::vector<Sprite *> sprites;
 
-		void render();
+  void render();
 
-	private:
-		sf::RenderWindow* window;
-	};
+private:
+  sf::RenderWindow *window;
+};
 
-}
+} // namespace game
