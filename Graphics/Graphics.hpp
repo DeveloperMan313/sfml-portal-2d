@@ -12,9 +12,9 @@ public:
 
   ~Graphics();
 
-  std::vector<Sprite *> sprites;
+  void render(const std::vector<Sprite*> &sprites);
 
-  void render();
+  void changeDisplayResolution(std::vector<int> resolution);
 
 private:
   sf::RenderWindow *window;
