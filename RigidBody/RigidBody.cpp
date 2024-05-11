@@ -46,6 +46,6 @@ void RigidBody::setBounciness(float bounciness_) {
   this->bounciness = bounciness_;
 }
 
-float RigidBody::getBounciness() { return this->bounciness; }
+float RigidBody::getBounciness() const { return this->bounciness; }
 
 } // namespace game

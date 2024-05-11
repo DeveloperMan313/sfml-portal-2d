@@ -20,7 +20,7 @@ public:
 
   void setBounciness(float bounciness_);
 
-  float getBounciness();
+  float getBounciness() const;
 
 private:
   sf::Vector2f force;
