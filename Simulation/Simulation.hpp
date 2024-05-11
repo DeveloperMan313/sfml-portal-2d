@@ -12,7 +12,7 @@ public:
   static void step(std::vector<RigidBody *> &rigidBodies, float stepSize);
 
 private:
-  static const sf::Vector2f gravity;
+  static const sf::Vector2f gravityAcc;
   static const float collisionShiftCoef;
 };
 
