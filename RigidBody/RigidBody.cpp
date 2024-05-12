@@ -18,6 +18,7 @@ RigidBody::RigidBody(const std::string &textureName, const Textures &textures,
   this->setBounciness(bounciness_);
   *const_cast<float *>(&this->mass) = mass_;
   *const_cast<float *>(&this->inverseMass) = 1.f / mass_;
+  hitboxes.push_back(Hitbox(this->getGlobalBounds(), {0.f, 0.f}));
 }
 
 void RigidBody::applyForce(const sf::Vector2f &force) {
@@ -34,7 +35,7 @@ void RigidBody::step(float stepSize) {
   const sf::Vector2f halfDeltaVel =
       this->force * this->inverseMass * stepSize * 0.5f;
   this->velocity += halfDeltaVel;
-  this->setPosition(this->getPosition() + this->velocity);
+  this->move(this->velocity * stepSize);
   this->velocity += halfDeltaVel;
   this->force = {0.f, 0.f};
 }
@@ -47,5 +48,51 @@ void RigidBody::setBounciness(float bounciness_) {
 }
 
 float RigidBody::getBounciness() const { return this->bounciness; }
+
+void RigidBody::setPosition(const sf::Vector2f &position) {
+  this->Sprite::setPosition(position);
+  for (Hitbox &hb : this->hitboxes) {
+    hb.setPosition(position);
+  }
+}
+
+void RigidBody::setPosition(float x, float y) { this->setPosition({x, y}); }
+
+void RigidBody::move(const sf::Vector2f &offset) {
+  this->setPosition(this->getPosition() + offset);
+}
+
+void RigidBody::move(float x, float y) { this->move({x, y}); }
+
+void RigidBody::setSize(const sf::Vector2f &size) {
+  const sf::Vector2i textureSize = this->getTextureRect().getSize();
+  this->Sprite::setScale({size.x / textureSize.x, size.y / textureSize.y});
+  for (Hitbox &hb : this->hitboxes) {
+    hb.setSize(size);
+  }
+}
+
+void RigidBody::setSize(float x, float y) { this->setSize({x, y}); }
+
+void RigidBody::setScale(const sf::Vector2f &scale) {
+  const sf::Vector2i textureSize = this->getTextureRect().getSize();
+  this->Sprite::setScale(scale);
+  for (Hitbox &hb : this->hitboxes) {
+    hb.setScale(scale);
+  }
+}
+
+void RigidBody::setScale(float x, float y) { this->setScale({x, y}); }
+
+bool RigidBody::intersects(const RigidBody &other) {
+  for (const Hitbox &hb1 : this->hitboxes) {
+    for (const Hitbox &hb2 : other.hitboxes) {
+      if (hb1.intersects(hb2)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 
 } // namespace game

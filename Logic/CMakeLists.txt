@@ -10,3 +10,6 @@ set(${PROJECT}_HEADERS Logic.hpp)
 set(${PROJECT}_SOURCE_LIST ${${PROJECT}_SOURCES} ${${PROJECT}_HEADERS})
 
 add_library(${PROJECT} STATIC ${${PROJECT}_SOURCE_LIST})
+
+target_link_libraries(${PROJECT} game-graphics game-rigidbody game-simulation
+                      game-sprite game-textures)
