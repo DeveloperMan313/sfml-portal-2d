@@ -7,14 +7,13 @@ namespace game {
 
 class Simulation {
 public:
-  static float collisionCorrectionTimeStep;
-
   static void processCollision(RigidBody &rb1, RigidBody &rb2);
 
   static void step(std::vector<RigidBody *> &rigidBodies, float stepSize);
 
 private:
   static const sf::Vector2f gravityAcc;
+  static const float collisionShiftCoef;
 
   static void processHitboxesCollision(const Hitbox &hb1, const Hitbox &hb2,
                                        RigidBody &rb1, RigidBody &rb2);

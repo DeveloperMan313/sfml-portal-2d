@@ -23,7 +23,6 @@ void Logic::addRigidBody(RigidBody *rigidBody) {
 void Logic::run() {
   const float frameDuration = 1.f / this->targetFps;
   const float physicsTimeStep = frameDuration / this->physicsStepsPerFrame;
-  Simulation::collisionCorrectionTimeStep = physicsTimeStep;
   while (true) {
     for (size_t i = 0; i < this->physicsStepsPerFrame; ++i) {
       Simulation::step(this->rigidBodies, physicsTimeStep);

@@ -4,6 +4,8 @@
 
 namespace game {
 
+const float Hitbox::diagonalNormalSlopeEps = 0.01f;
+
 Hitbox::Hitbox(const sf::FloatRect &rect_, const sf::Vector2f &origin,
                const sf::Vector2f &activeDirection_)
     : activeDirection(activeDirection_) {
@@ -25,8 +27,14 @@ sf::Vector2f Hitbox::collisionNormal(const Hitbox &other) const {
   const sf::Vector2f otherCenterPos =
       sf::Vector2f(otherGlobalBounds.left, otherGlobalBounds.top) +
       sf::Vector2f(otherGlobalBounds.width, otherGlobalBounds.height) * 0.5f;
-  if (abs(thisCenterPos.x - otherCenterPos.x) / (thisSize.x + otherSize.x) <
-      abs(thisCenterPos.y - otherCenterPos.y) / (thisSize.y + otherSize.y)) {
+  const float ratioX = std::abs(thisCenterPos.x - otherCenterPos.x) /
+                       (thisSize.x + otherSize.x),
+              ratioY = std::abs(thisCenterPos.y - otherCenterPos.y) /
+                       (thisSize.y + otherSize.y);
+  if (std::abs(ratioX / ratioY - 1.f) < Hitbox::diagonalNormalSlopeEps) {
+    return {1.f, 1.f};
+  }
+  if (ratioX < ratioY) {
     return {0.f, 1.f};
   }
   return {1.f, 0.f};

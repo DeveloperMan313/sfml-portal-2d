@@ -27,6 +27,7 @@ public:
 
 private:
   sf::RectangleShape rect;
+  static const float diagonalNormalSlopeEps;
 };
 
 } // namespace game

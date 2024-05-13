@@ -1,13 +1,12 @@
 #include "Simulation.hpp"
 #include "../Math/Math.hpp"
 #include "SFML/System/Vector2.hpp"
-#include <cmath>
 #include <cstddef>
 
 namespace game {
 
 const sf::Vector2f Simulation::gravityAcc(0.f, 9.81f);
-float Simulation::collisionCorrectionTimeStep = 0.1f;
+const float Simulation::collisionShiftCoef = 0.1f;
 
 void Simulation::processCollision(RigidBody &rb1_, RigidBody &rb2_) {
   if (rb1_.isStatic && rb2_.isStatic) {
@@ -54,25 +53,30 @@ void Simulation::processHitboxesCollision(const Hitbox &hb1, const Hitbox &hb2,
   } else {
     // general case
     v12_proj =
-        (v21_proj +
-         Math::sign(v21_proj) *
-             sqrt(abs(v21_proj * ((1.f / m1_over_m2) * (bounciness - v21_proj) +
-                                  bounciness)))) /
+        (v21_proj + Math::sign(v21_proj) *
+                        sqrt(std::abs(v21_proj * ((1.f / m1_over_m2) *
+                                                      (bounciness - v21_proj) +
+                                                  bounciness)))) /
         (m1_over_m2 + 1);
     v22_proj = v21_proj - m1_over_m2 * v12_proj;
-  }
-  while (rb1.intersects(rb2)) {
-    if (!rb1.isStatic) {
-      rb1.move(-rb1.velocity * Simulation::collisionCorrectionTimeStep);
-    }
-    if (!rb2.isStatic) {
-      rb2.move(-rb2.velocity * Simulation::collisionCorrectionTimeStep);
-    }
   }
   rb1.velocity +=
       (-Math::projection(rb1.velocity, normal) + v12_proj + v11proj) * normal;
   rb2.velocity +=
       (-Math::projection(rb2.velocity, normal) + v22_proj + v11proj) * normal;
+  const sf::Vector2f deltaShift =
+      Math::normalize(
+          Math::projection(rb2.getPosition() - rb1.getPosition(), normal) *
+          normal) *
+      Simulation::collisionShiftCoef;
+  while (rb1.getGlobalBounds().intersects(rb2.getGlobalBounds())) {
+    if (!rb1.isStatic) {
+      rb1.move(-deltaShift);
+    }
+    if (!rb2.isStatic) {
+      rb2.move(deltaShift);
+    }
+  }
 }
 
 } // namespace game
