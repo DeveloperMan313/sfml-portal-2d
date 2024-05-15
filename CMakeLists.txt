@@ -13,7 +13,8 @@ set(PROJECT_DIRS
     Textures
     Simulation
     Math
-    Hitbox)
+    Hitbox
+    GUI)
 
 foreach(PROJECT_DIR IN LISTS PROJECT_DIRS)
   add_subdirectory(${PROJECT_DIR})
@@ -38,7 +39,8 @@ set(GAME_COMPONENTS
     game-textures
     game-simulation
     game-math
-    game-hitbox)
+    game-hitbox
+    game-gui)
 
 set(SFML_COMPONENTS sfml-window sfml-graphics sfml-system)
 

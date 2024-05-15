@@ -15,9 +15,11 @@ public:
   void render(const std::vector<Sprite*> &sprites);
 
   void changeDisplayResolution(std::vector<int> resolution);
+  
+  sf::RenderWindow *window;
 
 private:
-  sf::RenderWindow *window;
+  
 };
 
 } // namespace game
