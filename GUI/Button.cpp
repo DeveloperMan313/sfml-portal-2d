@@ -11,8 +11,8 @@ namespace game {
     pressSprite.setTexture(*textures.getTexturePointer(pressedTextureName));
     unpressSprite.setTexture(*textures.getTexturePointer(unpressedTextureName));
 
-    pressSprite.setScale(0.5, 0.5);
-    unpressSprite.setScale(0.5, 0.5);
+    pressSprite.setScale(3, 3);
+    unpressSprite.setScale(3, 3);
 
     font.loadFromFile("data/fonts/UbuntuSansMono.ttf");
     text.setFont(font);
@@ -24,7 +24,7 @@ namespace game {
 
     sf::FloatRect textRect = text.getLocalBounds();
     text.setOrigin(textRect.left + textRect.width / 2.0f, 0);
-    text.setPosition(sf::Vector2f(newPosition.x + size.x / 2.f, position.y + size.y / 4));
+    text.setPosition(sf::Vector2f(newPosition.x + size.x / 2.f, position.y + size.y / 4 - 5));
 
   }
 

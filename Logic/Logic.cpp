@@ -27,7 +27,7 @@ void Logic::run() {
     for (size_t i = 0; i < this->physicsStepsPerFrame; ++i) {
       Simulation::step(this->rigidBodies, physicsTimeStep);
     }
-    graphics.render(this->sprites);
+    graphics.renderSprites(this->sprites);
     sf::sleep(sf::seconds(frameDuration));
   }
 }

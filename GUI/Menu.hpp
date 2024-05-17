@@ -2,17 +2,22 @@
 
 #include "SFML/Graphics.hpp"
 #include "Button.hpp"
+#include <functional>
 #include <iostream>
 
 namespace game {
 
   class MainMenu {
   public:
-    void start() { std::cout << "...."; };
+    MainMenu(sf::RenderWindow& window, const Textures& textures);
 
-    MainMenu(sf::RenderWindow*, const Textures& textures);
+    void run();
 
-    void Run();
+    std::function<void(void)> playHandler;
+
+    std::function<void(void)> settingHandler;
+
+    std::function<void(void)> exitHandler;
 
     void draw();
 
@@ -22,8 +27,9 @@ namespace game {
 
     ~MainMenu() {};
 
-  private:
     void setupMenu(const Textures& textures);
+
+  private:
 
     sf::RenderWindow &window;
 
