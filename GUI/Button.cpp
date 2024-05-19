@@ -17,7 +17,8 @@ namespace game {
     font.loadFromFile("data/fonts/UbuntuSansMono.ttf");
     text.setFont(font);
     text.setString(newText);
-    text.setColor(sf::Color(0.f, 107, 139));
+    text.setFillColor(sf::Color(0.f, 107, 139));
+    text.setOutlineColor(sf::Color(47, 79, 79));
 
     pressSprite.setPosition(position);
     unpressSprite.setPosition(position);

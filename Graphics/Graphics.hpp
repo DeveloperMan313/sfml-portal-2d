@@ -16,7 +16,7 @@ public:
 
   ~Graphics();
 
-  void render(const renderModes& renderMode);
+  void render(const renderModes& renderMode, const std::vector<Sprite*> &sprites);
 
   void renderSprites(const std::vector<Sprite*> &sprites);
 
@@ -26,11 +26,13 @@ public:
 
   void closeWindow();
 
-  void setPlayHandler(const std::function<void(void)>& ph) { menu->playHandler = ph; }
+  void setLevelSize(const sf::Vector2i& size);
 
-  void setSettingsHandler(const std::function<void(void)>& sh) { menu->settingHandler = sh; }
+  void setPlayHandler(const std::function<void(void)>& ph);
 
-  void setExitHandler(const std::function<void(void)>& eh) { menu->exitHandler = eh; }
+  void setSettingsHandler(const std::function<void(void)>& sh);
+
+  void setExitHandler(const std::function<void(void)>& eh);
 
 private:  
 	MainMenu* menu;
@@ -38,6 +40,8 @@ private:
 	Textures* textures;
 
 	sf::RenderWindow* window;
+
+  sf::View view;
 
 };
 
