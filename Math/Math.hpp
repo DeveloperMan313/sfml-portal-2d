@@ -18,6 +18,10 @@ public:
   static sf::Vector2f normalize(const sf::Vector2f &vec);
 
   static float projection(const sf::Vector2f &vec, const sf::Vector2f &axis);
+
+  static float fullAngle(const sf::Vector2f &from, const sf::Vector2f &to);
+
+  static sf::Vector2f rotate(const sf::Vector2f &vec, float angle);
 };
 
 } // namespace game

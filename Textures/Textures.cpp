@@ -1,7 +1,9 @@
 #include "Textures.hpp"
 
 namespace game {
-std::vector<std::string> Textures::textureNames = {"placeholder", "pressedButton", "unpressedButton"};
+std::vector<std::string> Textures::textureNames = {
+    "placeholder", "pressedButton", "unpressedButton", "wall",
+    "portalBlue",  "portalRed",     "companionCube",   "player"};
 
 Textures::Textures() {
   for (const std::string &textureName : Textures::textureNames) {

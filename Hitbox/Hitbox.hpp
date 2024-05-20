@@ -12,10 +12,13 @@ class Hitbox {
 public:
   sf::Vector2f activeDirection;
 
-  Hitbox(const sf::FloatRect &rect_, const sf::Vector2f &origin,
+  Hitbox(const sf::Vector2f &size, const sf::Vector2f &origin,
+         const sf::Vector2f &position,
          const sf::Vector2f &activeDirection_ = {0.f, 0.f});
 
   sf::Vector2f collisionNormal(const Hitbox &other) const;
+
+  sf::Vector2f getCenterPosition() const;
 
   void setPosition(const sf::Vector2f &position);
 
@@ -25,8 +28,10 @@ public:
 
   bool intersects(const Hitbox &other) const;
 
-private:
+  sf::FloatRect getGlobalBounds() const;
   sf::RectangleShape rect;
+
+private:
   static const float diagonalNormalSlopeEps;
 };
 

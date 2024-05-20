@@ -5,10 +5,12 @@
 
 namespace game {
 
-RigidBody::RigidBody(const std::string &textureName, const Textures &textures,
-                     bool isStatic_, float mass_, float bounciness_)
-    : Sprite(textureName, textures), isStatic(isStatic_), force({0.f, 0.f}),
-      velocity({0.f, 0.f}), mass(1.f), inverseMass(1.f) {
+RigidBody::RigidBody(objectClass objClass_, const std::string &textureName,
+                     const Textures &textures, bool isStatic_, float mass_,
+                     float bounciness_)
+    : Sprite(textureName, textures), objClass(objClass_), isStatic(isStatic_),
+      isDestroyed(false), force({0.f, 0.f}), velocity({0.f, 0.f}), mass(1.f),
+      inverseMass(1.f) {
   if (mass_ <= 0.f) {
     throw std::invalid_argument("mass should be greater than 0");
   }
@@ -18,7 +20,9 @@ RigidBody::RigidBody(const std::string &textureName, const Textures &textures,
   this->setBounciness(bounciness_);
   *const_cast<float *>(&this->mass) = mass_;
   *const_cast<float *>(&this->inverseMass) = 1.f / mass_;
-  hitboxes.push_back(Hitbox(this->getGlobalBounds(), {0.f, 0.f}));
+  this->setOrigin(this->getGlobalBounds().getSize() * 0.5f);
+  hitboxes.push_back(Hitbox(this->getGlobalBounds().getSize(),
+                            this->getOrigin(), this->getPosition()));
 }
 
 void RigidBody::applyForce(const sf::Vector2f &force) {
@@ -66,7 +70,7 @@ void RigidBody::move(float x, float y) { this->move({x, y}); }
 
 void RigidBody::setSize(const sf::Vector2f &size) {
   const sf::Vector2i textureSize = this->getTextureRect().getSize();
-  this->Sprite::setScale({size.x / textureSize.x, size.y / textureSize.y});
+  // this->Sprite::setScale({size.x / textureSize.x, size.y / textureSize.y});
   for (Hitbox &hb : this->hitboxes) {
     hb.setSize(size);
   }
@@ -76,7 +80,7 @@ void RigidBody::setSize(float x, float y) { this->setSize({x, y}); }
 
 void RigidBody::setScale(const sf::Vector2f &scale) {
   const sf::Vector2i textureSize = this->getTextureRect().getSize();
-  this->Sprite::setScale(scale);
+  // this->Sprite::setScale(scale);
   for (Hitbox &hb : this->hitboxes) {
     hb.setScale(scale);
   }
@@ -94,5 +98,9 @@ bool RigidBody::intersects(const RigidBody &other) {
   }
   return false;
 }
+
+void RigidBody::handleHitboxesCollision(RigidBody &otherRigidBody,
+                                        const Hitbox &otherHitbox,
+                                        const sf::Vector2f &normal) {}
 
 } // namespace game

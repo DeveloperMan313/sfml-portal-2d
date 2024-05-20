@@ -14,7 +14,11 @@ set(PROJECT_DIRS
     Simulation
     Math
     Hitbox
-    GUI)
+    GUI
+    Player
+    Portal
+    Wall
+    Cube)
 
 foreach(PROJECT_DIR IN LISTS PROJECT_DIRS)
   add_subdirectory(${PROJECT_DIR})
@@ -40,7 +44,11 @@ set(GAME_COMPONENTS
     game-simulation
     game-math
     game-hitbox
-    game-gui)
+    game-gui
+    game-player
+    game-portal
+    game-wall
+    game-cube)
 
 set(SFML_COMPONENTS sfml-window sfml-graphics sfml-system)
 

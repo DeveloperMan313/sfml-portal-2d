@@ -7,21 +7,25 @@
 
 namespace game {
 
+enum class objectClass { wall, player, portal, cube };
+
 class RigidBody : public Sprite {
 public:
-  bool isStatic;
+  objectClass objClass;
+  bool isStatic, isDestroyed;
   sf::Vector2f velocity;
   const float mass, inverseMass;
   std::vector<Hitbox> hitboxes;
 
-  RigidBody(const std::string &textureName, const Textures &textures,
-            bool isStatic_ = false, float mass_ = 1.f, float bounciness_ = 1.f);
+  RigidBody(objectClass objClass_, const std::string &textureName,
+            const Textures &textures, bool isStatic_ = false, float mass_ = 1.f,
+            float bounciness_ = 1.f);
 
   virtual ~RigidBody() = default;
 
   void applyForce(const sf::Vector2f &force);
 
-  void step(float stepSize);
+  virtual void step(float stepSize);
 
   void setBounciness(float bounciness_);
 
@@ -44,6 +48,10 @@ public:
   void setScale(float x, float y);
 
   bool intersects(const RigidBody &other);
+
+  virtual void handleHitboxesCollision(RigidBody &otherRigidBody,
+                                       const Hitbox &otherHitbox,
+                                       const sf::Vector2f &normal);
 
 private:
   sf::Vector2f force;
