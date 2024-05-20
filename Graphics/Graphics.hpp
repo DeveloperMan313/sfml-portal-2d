@@ -34,8 +34,12 @@ public:
 
   void setExitHandler(const std::function<void(void)>& eh);
 
+  void setGameMode(const renderModes& gameMode);
+
 private:  
 	MainMenu* menu;
+
+  renderModes gameMode;
 
 	Textures* textures;
 

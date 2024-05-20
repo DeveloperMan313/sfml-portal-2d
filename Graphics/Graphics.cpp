@@ -16,14 +16,14 @@ Graphics::~Graphics() {
 }
 
 void Graphics::render(const renderModes& renderMode, const std::vector<Sprite*>& sprites){
-    window->clear();
-    if (renderMode == renderModes::menuMode) {
-        menu->run();
+  window->clear();
+  if (renderMode == renderModes::menuMode) {
+      menu->run();
         
-    }
-    else if (renderMode == renderModes::gameMode) {
-      this->renderSprites(sprites);
-    }
+  }
+  else if (renderMode == renderModes::gameMode) {
+    this->renderSprites(sprites);
+  }
 
 }
 
@@ -49,8 +49,8 @@ bool Graphics::pollEvent(sf::Event& event){
 }
 
 void Graphics::closeWindow(){
-    this->window->close();
-    delete this->window;
+  this->window->close();
+  delete this->window;
 
 }
 
@@ -71,6 +71,15 @@ void Graphics::setSettingsHandler(const std::function<void(void)>& sh){
 void Graphics::setExitHandler(const std::function<void(void)>& eh){
   menu->exitHandler = eh;
 
+}
+
+void Graphics::setGameMode(const renderModes& gameMode)
+{
+  this->gameMode = gameMode;
+  if (gameMode == renderModes::menuMode)
+    this->window->setView(this->window->getDefaultView());
+  else 
+    this->window->setView(this->view);
 }
 
 } // namespace game
