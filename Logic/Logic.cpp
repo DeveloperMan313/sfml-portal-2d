@@ -13,7 +13,8 @@ namespace game {
 Logic::Logic(int targetFps_, int physicsStepsPerFrame_)
     : targetFps(targetFps_), physicsStepsPerFrame(physicsStepsPerFrame_),
       renderMode(renderModes::menuMode), isRunning(true), portalBlue(nullptr),
-      portalRed(nullptr), player(nullptr) {
+      portalRed(nullptr), player(nullptr),
+      keyStatus(sf::Keyboard::KeyCount, false) {
   this->graphics.setPlayHandler(std::bind(&Logic::handlePlay, this));
   this->graphics.setSettingsHandler(std::bind(&Logic::handleSettings, this));
   this->graphics.setExitHandler(std::bind(&Logic::handleExit, this));
@@ -29,6 +30,7 @@ Logic::~Logic() {
 }
 
 void Logic::addRigidBody(RigidBody *rigidBody) {
+  rigidBody->subscribe(this->emitters);
   this->sprites.push_back(rigidBody);
   this->rigidBodies.push_back(rigidBody);
   RigidBody *inserted = this->rigidBodies[this->rigidBodies.size() - 1];
@@ -57,17 +59,27 @@ void Logic::run() {
   const float physicsTimeStep = frameDuration / this->physicsStepsPerFrame;
   while (this->isRunning) {
     if (this->renderMode == renderModes::gameMode) {
-      handleEvents();
+      this->handleEvents();
     }
-    for (size_t i = 0; i < this->physicsStepsPerFrame * 10; ++i) {
+    for (size_t i = 0; i < this->physicsStepsPerFrame * 10; ++i) { // 10 testing
       Simulation::step(this->rigidBodies, physicsTimeStep);
     }
     this->removeDestroyed();
     graphics.render(this->renderMode, this->sprites);
-    if (this->renderMode == renderModes::gameMode) {
-    }
+    // if (this->renderMode == renderModes::gameMode) {
+    //   graphics.renderDebug(this->rigidBodies);
+    // }
     sf::sleep(sf::seconds(frameDuration));
   }
+}
+
+bool Logic::changesKeyStatus(const sf::Event &event) {
+  const bool status = event.type == sf::Event::KeyPressed;
+  if (this->keyStatus[event.key.code] != status) {
+    this->keyStatus[event.key.code] = status;
+    return true;
+  }
+  return false;
 }
 
 void Logic::handleEvents() {
@@ -79,8 +91,10 @@ void Logic::handleEvents() {
       break;
     case sf::Event::KeyPressed:
     case sf::Event::KeyReleased:
-      this->player->setKeyState(event.key.code,
-                                event.type == sf::Event::KeyPressed);
+      if (this->changesKeyStatus(event)) {
+        this->emitters.keyboard.emit(
+            {.type = event.type, .key = event.key.code});
+      }
       break;
     default:
       break;

@@ -18,7 +18,9 @@ set(PROJECT_DIRS
     Player
     Portal
     Wall
-    Cube)
+    Cube
+    Emitter
+    Events)
 
 foreach(PROJECT_DIR IN LISTS PROJECT_DIRS)
   add_subdirectory(${PROJECT_DIR})
@@ -48,7 +50,9 @@ set(GAME_COMPONENTS
     game-player
     game-portal
     game-wall
-    game-cube)
+    game-cube
+    game-emitter
+    game-events)
 
 set(SFML_COMPONENTS sfml-window sfml-graphics sfml-system)
 

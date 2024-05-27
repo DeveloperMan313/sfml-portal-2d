@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Events/Events.hpp"
 #include "../Hitbox/Hitbox.hpp"
 #include "../Sprite/Sprite.hpp"
 #include "SFML/System/Vector2.hpp"
@@ -52,6 +53,10 @@ public:
   virtual void handleHitboxesCollision(RigidBody &otherRigidBody,
                                        const Hitbox &otherHitbox,
                                        const sf::Vector2f &normal);
+
+  virtual void handleTeleport(float teleportAngle);
+
+  virtual void subscribe(events::emitters &emitters);
 
 private:
   sf::Vector2f force;

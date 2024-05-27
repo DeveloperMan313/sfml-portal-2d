@@ -28,6 +28,11 @@ public:
 
   bool intersects(const Hitbox &other) const;
 
+  bool isInActiveDirection(const Hitbox &other) const;
+
+  bool isInActiveDirection(const Hitbox &other,
+                           const sf::Vector2f &referencePoint) const;
+
   sf::FloatRect getGlobalBounds() const;
   sf::RectangleShape rect;
 

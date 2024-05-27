@@ -69,7 +69,7 @@ void RigidBody::move(const sf::Vector2f &offset) {
 void RigidBody::move(float x, float y) { this->move({x, y}); }
 
 void RigidBody::setSize(const sf::Vector2f &size) {
-  const sf::Vector2i textureSize = this->getTextureRect().getSize();
+  // const sf::Vector2i textureSize = this->getTextureRect().getSize();
   // this->Sprite::setScale({size.x / textureSize.x, size.y / textureSize.y});
   for (Hitbox &hb : this->hitboxes) {
     hb.setSize(size);
@@ -79,7 +79,7 @@ void RigidBody::setSize(const sf::Vector2f &size) {
 void RigidBody::setSize(float x, float y) { this->setSize({x, y}); }
 
 void RigidBody::setScale(const sf::Vector2f &scale) {
-  const sf::Vector2i textureSize = this->getTextureRect().getSize();
+  // const sf::Vector2i textureSize = this->getTextureRect().getSize();
   // this->Sprite::setScale(scale);
   for (Hitbox &hb : this->hitboxes) {
     hb.setScale(scale);
@@ -102,5 +102,9 @@ bool RigidBody::intersects(const RigidBody &other) {
 void RigidBody::handleHitboxesCollision(RigidBody &otherRigidBody,
                                         const Hitbox &otherHitbox,
                                         const sf::Vector2f &normal) {}
+
+void RigidBody::handleTeleport(float teleportAngle) {}
+
+void RigidBody::subscribe(events::emitters &emitters) {}
 
 } // namespace game

@@ -20,4 +20,6 @@ target_link_libraries(
   game-simulation
   game-sprite
   game-textures
-  game-wall)
+  game-wall
+  game-emitter
+  game-events)

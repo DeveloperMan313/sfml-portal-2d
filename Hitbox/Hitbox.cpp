@@ -57,6 +57,23 @@ bool Hitbox::intersects(const Hitbox &other) const {
   return this->rect.getGlobalBounds().intersects(other.rect.getGlobalBounds());
 }
 
+bool Hitbox::isInActiveDirection(const Hitbox &other) const {
+  if (this->activeDirection.x == 0.f && this->activeDirection.y == 0.f) {
+    return true;
+  }
+  return Math::dot(other.getCenterPosition() - this->getCenterPosition(),
+                   this->activeDirection) > 0.f;
+}
+
+bool Hitbox::isInActiveDirection(const Hitbox &other,
+                                 const sf::Vector2f &referencePoint) const {
+  if (this->activeDirection.x == 0.f && this->activeDirection.y == 0.f) {
+    return true;
+  }
+  return Math::dot(other.getCenterPosition() - referencePoint,
+                   this->activeDirection) > 0.f;
+}
+
 sf::FloatRect Hitbox::getGlobalBounds() const {
   return this->rect.getGlobalBounds();
 }

@@ -11,4 +11,4 @@ set(${PROJECT}_SOURCE_LIST ${${PROJECT}_SOURCES} ${${PROJECT}_HEADERS})
 
 add_library(${PROJECT} STATIC ${${PROJECT}_SOURCE_LIST})
 
-target_link_libraries(${PROJECT} game-hitbox game-sprite)
+target_link_libraries(${PROJECT} game-hitbox game-sprite game-events)

@@ -7,6 +7,8 @@ namespace game {
 
 class Math {
 public:
+  static const float PI;
+
   template <typename T> static int sign(T val) {
     return (T(0) < val) - (val < T(0));
   }
@@ -22,6 +24,8 @@ public:
   static float fullAngle(const sf::Vector2f &from, const sf::Vector2f &to);
 
   static sf::Vector2f rotate(const sf::Vector2f &vec, float angle);
+
+  static float toDegrees(float radians);
 };
 
 } // namespace game

@@ -106,7 +106,7 @@ void Portal::link(Portal *portalPtr) {
   if (portalPtr == nullptr) {
     this->hitboxes[0].activeDirection = {0.f, 0.f};
   } else {
-    this->hitboxes[0].activeDirection = this->facing;
+    this->hitboxes[0].activeDirection = -this->facing;
     this->teleportAngle = Math::fullAngle(-this->facing, portalPtr->facing);
   }
   this->linkedPortal = portalPtr;
@@ -115,28 +115,39 @@ void Portal::link(Portal *portalPtr) {
 void Portal::handleHitboxesCollision(RigidBody &otherRigidBody,
                                      const Hitbox &otherHitbox,
                                      const sf::Vector2f &normal) {
-  const sf::Vector2f otherPosRel =
-      otherRigidBody.getPosition() - this->singularityPoint;
+  // assuming otherRigidBody has 1 hitbox
+  const sf::Vector2f hbPos = otherRigidBody.hitboxes[0].getCenterPosition(),
+                     hbPosRelToRb = hbPos - otherRigidBody.getPosition(),
+                     singPointRelToHb = this->singularityPoint - hbPos;
   if (this->linkedPortal == nullptr ||
-      Math::dot(otherPosRel, this->facing) < 0.f) {
+      Math::dot(singPointRelToHb, this->facing) < 0.f ||
+      Math::dot(this->getPosition() - hbPos, this->facing) > 0.f ||
+      Math::dot(otherRigidBody.velocity, this->facing) > 0.f) {
     return;
   }
-  otherRigidBody.setPosition(this->linkedPortal->getPosition() +
-                             Math::rotate(otherPosRel, this->teleportAngle));
+  otherRigidBody.setPosition(
+      this->linkedPortal->singularityPoint +
+      Math::rotate(singPointRelToHb, this->teleportAngle) - hbPosRelToRb);
   otherRigidBody.velocity =
       Math::rotate(otherRigidBody.velocity, this->teleportAngle);
   if (otherRigidBody.objClass != objectClass::player) {
-    otherRigidBody.rotate(this->teleportAngle);
+    // reset rotation of 2PI to 0 to avoid floating point error
+    if (std::abs(otherRigidBody.getRotation() - Math::PI * 2.f) < 1e-6f) {
+      otherRigidBody.setRotation(0.f);
+    } else {
+      otherRigidBody.rotate(Math::toDegrees(Math::PI * 0.5f));
+    }
   }
+  otherRigidBody.handleTeleport(this->teleportAngle);
 }
 
 void Portal::setPosition(const sf::Vector2f &position) {
   const sf::FloatRect baseBounds = this->base.getGlobalBounds();
   this->singularityPoint = position;
   if (std::abs(this->facing.x) == 1.f) {
-    this->singularityPoint.x += baseBounds.width * 0.5 * this->facing.x;
+    this->singularityPoint.x += baseBounds.width * 0.5f * this->facing.x;
   } else {
-    this->singularityPoint.y += baseBounds.height * 0.5 * this->facing.y;
+    this->singularityPoint.y += baseBounds.height * 0.5f * this->facing.y;
   }
   this->RigidBody::setPosition(position);
 }
