@@ -14,12 +14,9 @@ add_library(${PROJECT} STATIC ${${PROJECT}_SOURCE_LIST})
 target_link_libraries(
   ${PROJECT}
   game-graphics
-  game-player
-  game-portal
   game-rigidbody
   game-simulation
   game-sprite
   game-textures
-  game-wall
   game-emitter
   game-events)

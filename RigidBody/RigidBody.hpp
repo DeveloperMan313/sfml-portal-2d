@@ -8,17 +8,21 @@
 
 namespace game {
 
-enum class objectClass { wall, player, portal, cube };
+enum class ObjectClass { wall, player, portal, cube };
 
 class RigidBody : public Sprite {
 public:
-  objectClass objClass;
+  typedef std::function<RigidBody *(size_t)> getRbByIdT;
+  typedef std::function<RigidBody *(ObjectClass, size_t)> getRbByClassT;
+
+  size_t id;
+  ObjectClass objectClass;
   bool isStatic, isDestroyed;
   sf::Vector2f velocity;
   const float mass, inverseMass;
   std::vector<Hitbox> hitboxes;
 
-  RigidBody(objectClass objClass_, const std::string &textureName,
+  RigidBody(ObjectClass objectClass_, const std::string &textureName,
             const Textures &textures, bool isStatic_ = false, float mass_ = 1.f,
             float bounciness_ = 1.f);
 
@@ -50,13 +54,24 @@ public:
 
   bool intersects(const RigidBody &other);
 
+  void setCallbacks(const getRbByIdT &getRbById_,
+                    const getRbByClassT &getRbByClass_);
+
   virtual void handleHitboxesCollision(RigidBody &otherRigidBody,
                                        const Hitbox &otherHitbox,
                                        const sf::Vector2f &normal);
 
   virtual void handleTeleport(float teleportAngle);
 
-  virtual void subscribe(events::emitters &emitters);
+  virtual void subscribe(events::Emitters &Emitters);
+
+  bool operator==(const RigidBody &other) const;
+
+  bool operator!=(const RigidBody &other) const;
+
+protected:
+  getRbByIdT getRbById;
+  getRbByClassT getRbByClass;
 
 private:
   sf::Vector2f force;

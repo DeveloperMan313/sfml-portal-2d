@@ -3,8 +3,6 @@
 #include "../Emitter/Emitter.hpp"
 #include "../Events/Events.hpp"
 #include "../Graphics/Graphics.hpp"
-#include "../Player/Player.hpp"
-#include "../Portal/Portal.hpp"
 #include "../RigidBody/RigidBody.hpp"
 #include "../Sprite/Sprite.hpp"
 #include "../Textures/Textures.hpp"
@@ -29,12 +27,11 @@ private:
   Graphics graphics;
   std::vector<Sprite *> sprites;
   std::vector<RigidBody *> rigidBodies;
+  size_t nextRbId;
   int targetFps, physicsStepsPerFrame;
   renderModes renderMode;
   bool isRunning;
-  Portal *portalBlue, *portalRed;
-  Player *player;
-  events::emitters emitters;
+  events::Emitters emitters;
   std::vector<bool> keyStatus;
 
   bool changesKeyStatus(const sf::Event &event);
@@ -43,7 +40,9 @@ private:
 
   void removeDestroyed();
 
-  void handlePortalRemoval(const Portal *removed, Portal *other);
+  RigidBody *getRbById(size_t id);
+
+  RigidBody *getRbByClass(ObjectClass objectClass, size_t number);
 
   void handlePlay();
 

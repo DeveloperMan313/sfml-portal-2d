@@ -11,4 +11,4 @@ set(${PROJECT}_SOURCE_LIST ${${PROJECT}_SOURCES} ${${PROJECT}_HEADERS})
 
 add_library(${PROJECT} STATIC ${${PROJECT}_SOURCE_LIST})
 
-target_link_libraries(${PROJECT} game-math game-rigidbody)
+target_link_libraries(${PROJECT} game-math game-rigidbody game-wall)

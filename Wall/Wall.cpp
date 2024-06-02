@@ -1,11 +1,10 @@
 #include "Wall.hpp"
 #include "SFML/Graphics/Rect.hpp"
-#include <SFML/System/Vector2.hpp>
 
 namespace game {
 
 Wall::Wall(const Textures &textures)
-    : RigidBody(objectClass::wall, "wall", textures, true, 1.f, 0.9f) {}
+    : RigidBody(ObjectClass::wall, "wall", textures, true, 1.f, 0.9f) {}
 
 void Wall::setScale(const sf::Vector2f &scale) {
   const sf::Vector2f oldSizeF(this->getTextureRect().getSize());

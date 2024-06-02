@@ -19,7 +19,7 @@ public:
 
   void handleTeleport(float teleportAngle) override;
 
-  void subscribe(events::emitters &emitters) override;
+  void subscribe(events::Emitters &emitters) override;
 
 private:
   bool isStanding, isTryingToJump, isGoingLeft, isGoingRight;
@@ -29,7 +29,7 @@ private:
 
   void tryToJump();
 
-  void onKeyboard(const events::keyboard &event);
+  void onKeyboard(const events::Keyboard &event);
 };
 
 } // namespace game

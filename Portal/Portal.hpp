@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../RigidBody/RigidBody.hpp"
+#include "../Wall/Wall.hpp"
 #include "SFML/System/Vector2.hpp"
 
 namespace game {
@@ -10,14 +11,14 @@ enum class portalColor { blue, red };
 class Portal : public RigidBody {
 public:
   const portalColor color;
-  RigidBody &base;
+  Wall *basePtr;
 
-  Portal(const Textures &textures, RigidBody &base_,
-         const sf::Vector2f &facing_, const portalColor color_);
+  Portal(const Textures &textures, Wall *basePtr_, const sf::Vector2f &facing_,
+         const portalColor color_);
+
+  ~Portal() override;
 
   void cutHitbox(size_t baseHitboxIdx);
-
-  void link(Portal *portalPtr);
 
   void handleHitboxesCollision(RigidBody &otherRigidBody,
                                const Hitbox &otherHitbox,
@@ -27,10 +28,18 @@ public:
 
   void setPosition(float x, float y);
 
+  void subscribe(events::Emitters &emitters) override;
+
 private:
+  void link(const Portal *portalPtr);
+
+  void onRbAdd(const events::RigidBody &event);
+
+  void onRbRemove(const events::RigidBody &event);
+
   const sf::Vector2f facing;
   sf::Vector2f singularityPoint;
-  Portal *linkedPortal;
+  const Portal *linkedPortal;
   float teleportAngle;
   static const float baseCutoffMinGap;
 };

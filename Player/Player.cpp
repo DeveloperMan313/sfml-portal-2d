@@ -13,7 +13,7 @@ const float Player::moveSpeed = 50.f, Player::moveSharpnessCoef = 1.2f,
             Player::jumpSpeed = 50.f;
 
 Player::Player(const Textures &textures)
-    : RigidBody(objectClass::player, "player", textures, false, 50.f, 0.f),
+    : RigidBody(ObjectClass::player, "player", textures, false, 50.f, 0.f),
       isStanding(false), isTryingToJump(false), isGoingLeft(false),
       isGoingRight(false) {}
 
@@ -53,7 +53,7 @@ void Player::handleHitboxesCollision(RigidBody &otherRigidBody,
   }
 }
 
-void Player::onKeyboard(const events::keyboard &event) {
+void Player::onKeyboard(const events::Keyboard &event) {
   const bool status = event.type == sf::Event::KeyPressed;
   switch (event.key) {
   case sf::Keyboard::Key::W:
@@ -85,9 +85,9 @@ void Player::handleTeleport(float teleportAngle) {
   }
 }
 
-void Player::subscribe(events::emitters &emitters) {
+void Player::subscribe(events::Emitters &emitters) {
   emitters.keyboard.subscribe(
-      std::bind(&Player::onKeyboard, this, std::placeholders::_1));
+      this->id, std::bind(&Player::onKeyboard, this, std::placeholders::_1));
 }
 
 } // namespace game

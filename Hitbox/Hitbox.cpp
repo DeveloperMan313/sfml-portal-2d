@@ -26,14 +26,16 @@ sf::Vector2f Hitbox::collisionNormal(const Hitbox &other) const {
                      otherSize = otherGlobalBounds.getSize();
   const sf::Vector2f thisCenterPos = this->getCenterPosition(),
                      otherCenterPos = other.getCenterPosition();
-  const float ratioX = std::abs(thisCenterPos.x - otherCenterPos.x) /
+  const float ratioX = (thisCenterPos.x - otherCenterPos.x) /
                        (thisSize.x + otherSize.x),
-              ratioY = std::abs(thisCenterPos.y - otherCenterPos.y) /
+              ratioY = (thisCenterPos.y - otherCenterPos.y) /
                        (thisSize.y + otherSize.y);
-  if (std::abs(ratioX / ratioY - 1.f) < Hitbox::diagonalNormalSlopeEps) {
-    return Math::normalize({1.f, 1.f});
+  const float ratioXoverY = ratioX / ratioY;
+  const float absRatioXoverY = std::abs(ratioXoverY);
+  if (std::abs(absRatioXoverY - 1.f) < Hitbox::diagonalNormalSlopeEps) {
+    return Math::normalize({1.f, ratioXoverY});
   }
-  if (ratioX < ratioY) {
+  if (absRatioXoverY < 1.f) {
     return {0.f, 1.f};
   }
   return {1.f, 0.f};

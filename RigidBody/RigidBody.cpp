@@ -5,12 +5,12 @@
 
 namespace game {
 
-RigidBody::RigidBody(objectClass objClass_, const std::string &textureName,
+RigidBody::RigidBody(ObjectClass objectClass_, const std::string &textureName,
                      const Textures &textures, bool isStatic_, float mass_,
                      float bounciness_)
-    : Sprite(textureName, textures), objClass(objClass_), isStatic(isStatic_),
-      isDestroyed(false), force({0.f, 0.f}), velocity({0.f, 0.f}), mass(1.f),
-      inverseMass(1.f) {
+    : Sprite(textureName, textures), id(0), objectClass(objectClass_),
+      isStatic(isStatic_), isDestroyed(false), force({0.f, 0.f}),
+      velocity({0.f, 0.f}), mass(1.f), inverseMass(1.f) {
   if (mass_ <= 0.f) {
     throw std::invalid_argument("mass should be greater than 0");
   }
@@ -99,12 +99,26 @@ bool RigidBody::intersects(const RigidBody &other) {
   return false;
 }
 
+void RigidBody::setCallbacks(const getRbByIdT &getRbById_,
+                             const getRbByClassT &getRbByClass_) {
+  this->getRbById = getRbById_;
+  this->getRbByClass = getRbByClass_;
+}
+
 void RigidBody::handleHitboxesCollision(RigidBody &otherRigidBody,
                                         const Hitbox &otherHitbox,
                                         const sf::Vector2f &normal) {}
 
 void RigidBody::handleTeleport(float teleportAngle) {}
 
-void RigidBody::subscribe(events::emitters &emitters) {}
+void RigidBody::subscribe(events::Emitters &emitters) {}
+
+bool RigidBody::operator==(const RigidBody &other) const {
+  return this->id == other.id;
+}
+
+bool RigidBody::operator!=(const RigidBody &other) const {
+  return this->id != other.id;
+}
 
 } // namespace game

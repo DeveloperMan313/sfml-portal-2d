@@ -11,9 +11,9 @@
 namespace game {
 
 Logic::Logic(int targetFps_, int physicsStepsPerFrame_)
-    : targetFps(targetFps_), physicsStepsPerFrame(physicsStepsPerFrame_),
-      renderMode(renderModes::menuMode), isRunning(true), portalBlue(nullptr),
-      portalRed(nullptr), player(nullptr),
+    : nextRbId(1), targetFps(targetFps_),
+      physicsStepsPerFrame(physicsStepsPerFrame_),
+      renderMode(renderModes::menuMode), isRunning(true),
       keyStatus(sf::Keyboard::KeyCount, false) {
   this->graphics.setPlayHandler(std::bind(&Logic::handlePlay, this));
   this->graphics.setSettingsHandler(std::bind(&Logic::handleSettings, this));
@@ -22,39 +22,27 @@ Logic::Logic(int targetFps_, int physicsStepsPerFrame_)
 }
 
 Logic::~Logic() {
-  this->sprites.clear();
-  this->rigidBodies.clear();
   for (RigidBody *rb : this->rigidBodies) {
-    delete rb;
+    rb->isDestroyed = true;
   }
+  this->removeDestroyed();
 }
 
 void Logic::addRigidBody(RigidBody *rigidBody) {
+  rigidBody->id = this->nextRbId;
+  ++this->nextRbId;
   rigidBody->subscribe(this->emitters);
+  rigidBody->setCallbacks(
+      std::bind(&Logic::getRbById, this, std::placeholders::_1),
+      std::bind(&Logic::getRbByClass, this, std::placeholders::_1,
+                std::placeholders::_2));
   this->sprites.push_back(rigidBody);
   this->rigidBodies.push_back(rigidBody);
-  RigidBody *inserted = this->rigidBodies[this->rigidBodies.size() - 1];
-  if (rigidBody->objClass == objectClass::player) {
-    this->player = dynamic_cast<Player *>(inserted);
-  }
-  if (rigidBody->objClass == objectClass::portal) {
-    Portal *portal = dynamic_cast<Portal *>(inserted);
-    if (portal->color == portalColor::blue) {
-      this->portalBlue = portal;
-    } else {
-      this->portalRed = portal;
-    }
-    if (this->portalBlue != nullptr && this->portalRed != nullptr) {
-      this->portalBlue->link(this->portalRed);
-      this->portalRed->link(this->portalBlue);
-    }
-  }
+  // rb gets the message of self's addition (may be changed)
+  this->emitters.rbAdd.emit({.rbId = rigidBody->id});
 }
 
 void Logic::run() {
-  Player player(this->textures);
-  player.setPosition(200.f, 0.f);
-  this->addRigidBody(&player);
   const float frameDuration = 1.f / this->targetFps;
   const float physicsTimeStep = frameDuration / this->physicsStepsPerFrame;
   while (this->isRunning) {
@@ -110,15 +98,12 @@ void Logic::removeDestroyed() {
       continue;
     }
     idxDestroyed[i] = true;
-    if (rigidBody == this->player) {
-      this->player = nullptr;
-    } else if (rigidBody == this->portalBlue) {
-      this->handlePortalRemoval(this->portalBlue, this->portalRed);
-      this->portalBlue = nullptr;
-    } else if (rigidBody == this->portalRed) {
-      this->handlePortalRemoval(this->portalRed, this->portalBlue);
-      this->portalRed = nullptr;
-    }
+    emitters.keyboard.unsubscribeOwner(rigidBody->id);
+    emitters.rbAdd.unsubscribeOwner(rigidBody->id);
+    emitters.rbRemove.unsubscribeOwner(rigidBody->id);
+    // rb doesn't get the message of self's removal, destructor should be used
+    this->emitters.rbRemove.emit({.rbId = rigidBody->id});
+    delete rigidBody;
   }
   size_t i = -1;
   std::erase_if(this->rigidBodies,
@@ -132,17 +117,25 @@ void Logic::removeDestroyed() {
                 });
 }
 
-void Logic::handlePortalRemoval(const Portal *removed, Portal *other) {
-  if (other == nullptr) {
-    return;
+RigidBody *Logic::getRbById(size_t id) {
+  for (RigidBody *rb : this->rigidBodies) {
+    if (rb->id == id) {
+      return rb;
+    }
   }
-  other->link(nullptr);
-  if (&removed->base != &other->base) {
-    dynamic_cast<Wall *>(&removed->base)->resetHitbox();
-  } else {
-    dynamic_cast<Wall *>(&other->base)->resetHitbox();
-    other->cutHitbox(0);
+  return nullptr;
+}
+
+RigidBody *Logic::getRbByClass(ObjectClass objectClass, size_t number) {
+  for (RigidBody *rb : this->rigidBodies) {
+    if (rb->objectClass == objectClass) {
+      if (number == 0) {
+        return rb;
+      }
+      --number;
+    }
   }
+  return nullptr;
 }
 
 void Logic::handlePlay() { this->renderMode = renderModes::gameMode; }
