@@ -4,8 +4,7 @@ namespace game {
 
 game::Graphics::Graphics() {
   this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "Portal 2D");
-  this->textures = new Textures();
-  this->menu = new MainMenu(*window, *textures);
+  this->menu = new MainMenu(*window);
 
 }
 

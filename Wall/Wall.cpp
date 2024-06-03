@@ -3,8 +3,7 @@
 
 namespace game {
 
-Wall::Wall(const Textures &textures)
-    : RigidBody(ObjectClass::wall, "wall", textures, true, 1.f, 0.9f) {}
+Wall::Wall() : RigidBody(ObjectClass::wall, "wall", true, 1.f, 0.9f) {}
 
 void Wall::setScale(const sf::Vector2f &scale) {
   const sf::Vector2f oldSizeF(this->getTextureRect().getSize());

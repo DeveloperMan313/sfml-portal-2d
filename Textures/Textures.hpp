@@ -9,6 +9,8 @@ namespace game {
 
 class Textures {
 public:
+  static Textures *textures;
+
   Textures();
 
   ~Textures();

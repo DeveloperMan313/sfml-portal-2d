@@ -41,8 +41,6 @@ private:
 
   renderModes gameMode;
 
-	Textures* textures;
-
 	sf::RenderWindow* window;
 
   sf::View view;

@@ -6,7 +6,7 @@ namespace game {
 
 class Cube : public RigidBody {
 public:
-  Cube(const Textures &textures);
+  Cube();
 };
 
 } // namespace game

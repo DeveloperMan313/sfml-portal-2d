@@ -9,7 +9,7 @@ namespace game {
 
   class MainMenu {
   public:
-    MainMenu(sf::RenderWindow& window, const Textures& textures);
+    MainMenu(sf::RenderWindow& window);
 
     void run();
 
@@ -27,7 +27,7 @@ namespace game {
 
     ~MainMenu() {};
 
-    void setupMenu(const Textures& textures);
+    void setupMenu();
 
   private:
 

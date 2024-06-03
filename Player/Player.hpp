@@ -9,9 +9,9 @@ namespace game {
 
 class Player : public RigidBody {
 public:
-  Player(const Textures &textures);
+  Player();
 
-  void step(float stepSize) override;
+  void step() override;
 
   void handleHitboxesCollision(RigidBody &otherRigidBody,
                                const Hitbox &otherHitbox,

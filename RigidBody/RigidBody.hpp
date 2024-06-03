@@ -23,14 +23,15 @@ public:
   std::vector<Hitbox> hitboxes;
 
   RigidBody(ObjectClass objectClass_, const std::string &textureName,
-            const Textures &textures, bool isStatic_ = false, float mass_ = 1.f,
-            float bounciness_ = 1.f);
+            bool isStatic_ = false, float mass_ = 1.f, float bounciness_ = 1.f);
 
   virtual ~RigidBody() = default;
 
+  virtual void step();
+
   void applyForce(const sf::Vector2f &force);
 
-  virtual void step(float stepSize);
+  virtual void physicsStep(float stepSize);
 
   void setBounciness(float bounciness_);
 
@@ -52,7 +53,7 @@ public:
 
   void setScale(float x, float y);
 
-  bool intersects(const RigidBody &other);
+  bool intersects(const RigidBody &other) const;
 
   void setCallbacks(const getRbByIdT &getRbById_,
                     const getRbByClassT &getRbByClass_);

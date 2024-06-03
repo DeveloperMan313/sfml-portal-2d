@@ -13,8 +13,6 @@ namespace game {
 
 class Logic {
 public:
-  Textures textures; // public for testing
-
   Logic(int targetFps_, int physicsStepsPerFrame_);
 
   ~Logic();
@@ -24,6 +22,7 @@ public:
   void run();
 
 private:
+  Textures textures;
   Graphics graphics;
   std::vector<Sprite *> sprites;
   std::vector<RigidBody *> rigidBodies;

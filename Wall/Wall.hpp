@@ -7,7 +7,7 @@ namespace game {
 
 class Wall : public RigidBody {
 public:
-  Wall(const Textures &textures);
+  Wall();
 
   void setScale(const sf::Vector2f &scale);
 

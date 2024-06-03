@@ -1,6 +1,5 @@
 #include "Logic.hpp"
 #include "../Simulation/Simulation.hpp"
-#include "../Wall/Wall.hpp"
 #include "SFML/System/Sleep.hpp"
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Event.hpp"
@@ -18,7 +17,7 @@ Logic::Logic(int targetFps_, int physicsStepsPerFrame_)
   this->graphics.setPlayHandler(std::bind(&Logic::handlePlay, this));
   this->graphics.setSettingsHandler(std::bind(&Logic::handleSettings, this));
   this->graphics.setExitHandler(std::bind(&Logic::handleExit, this));
-  this->textures.getTexturePointer("wall")->setRepeated(true);
+  Textures::textures->getTexturePointer("wall")->setRepeated(true);
 }
 
 Logic::~Logic() {
@@ -48,6 +47,9 @@ void Logic::run() {
   while (this->isRunning) {
     if (this->renderMode == renderModes::gameMode) {
       this->handleEvents();
+    }
+    for (RigidBody *rb : this->rigidBodies) {
+      rb->step();
     }
     for (size_t i = 0; i < this->physicsStepsPerFrame * 10; ++i) { // 10 testing
       Simulation::step(this->rigidBodies, physicsTimeStep);

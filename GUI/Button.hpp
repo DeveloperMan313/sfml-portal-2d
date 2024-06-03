@@ -9,7 +9,7 @@ namespace game {
 
   class Button {
   public:
-    Button(sf::Vector2f newPosition, sf::Vector2i newSize, const std::string& pressedTextureName, const std::string& unpressedTextureName, const std::string& text, const game::Textures& textures);
+    Button(sf::Vector2f newPosition, sf::Vector2i newSize, const std::string& pressedTextureName, const std::string& unpressedTextureName, const std::string& text);
 
     bool check(sf::Vector2i mousePosition);
 

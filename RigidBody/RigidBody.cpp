@@ -6,9 +6,8 @@
 namespace game {
 
 RigidBody::RigidBody(ObjectClass objectClass_, const std::string &textureName,
-                     const Textures &textures, bool isStatic_, float mass_,
-                     float bounciness_)
-    : Sprite(textureName, textures), id(0), objectClass(objectClass_),
+                     bool isStatic_, float mass_, float bounciness_)
+    : Sprite(textureName), id(0), objectClass(objectClass_),
       isStatic(isStatic_), isDestroyed(false), force({0.f, 0.f}),
       velocity({0.f, 0.f}), mass(1.f), inverseMass(1.f) {
   if (mass_ <= 0.f) {
@@ -25,6 +24,8 @@ RigidBody::RigidBody(ObjectClass objectClass_, const std::string &textureName,
                             this->getOrigin(), this->getPosition()));
 }
 
+void RigidBody::step() {}
+
 void RigidBody::applyForce(const sf::Vector2f &force) {
   if (this->isStatic) {
     return;
@@ -32,7 +33,7 @@ void RigidBody::applyForce(const sf::Vector2f &force) {
   this->force += force;
 }
 
-void RigidBody::step(float stepSize) {
+void RigidBody::physicsStep(float stepSize) {
   if (this->isStatic) {
     return;
   }
@@ -88,7 +89,7 @@ void RigidBody::setScale(const sf::Vector2f &scale) {
 
 void RigidBody::setScale(float x, float y) { this->setScale({x, y}); }
 
-bool RigidBody::intersects(const RigidBody &other) {
+bool RigidBody::intersects(const RigidBody &other) const {
   for (const Hitbox &hb1 : this->hitboxes) {
     for (const Hitbox &hb2 : other.hitboxes) {
       if (hb1.intersects(hb2)) {

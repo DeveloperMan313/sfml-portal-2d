@@ -12,7 +12,7 @@ void Simulation::step(std::vector<RigidBody *> &rigidBodies, float stepSize) {
   const size_t RBsSize = rigidBodies.size();
   for (size_t i = 0; i < RBsSize; ++i) {
     rigidBodies[i]->applyForce(rigidBodies[i]->mass * Simulation::gravityAcc);
-    rigidBodies[i]->step(stepSize);
+    rigidBodies[i]->physicsStep(stepSize);
   }
   Simulation::processCollisions(rigidBodies);
 }

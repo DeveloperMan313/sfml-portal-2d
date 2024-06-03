@@ -2,14 +2,14 @@
 
 namespace game {
 
-  Button::Button(sf::Vector2f newPosition, sf::Vector2i newSize, const std::string& pressedTextureName, const std::string& unpressedTextureName, const std::string& newText, const game::Textures& textures){
+  Button::Button(sf::Vector2f newPosition, sf::Vector2i newSize, const std::string& pressedTextureName, const std::string& unpressedTextureName, const std::string& newText){
     position = newPosition;
     size = newSize;
 
     buttonPressed = false;
 
-    pressSprite.setTexture(*textures.getTexturePointer(pressedTextureName));
-    unpressSprite.setTexture(*textures.getTexturePointer(unpressedTextureName));
+    pressSprite.setTexture(*Textures::textures->getTexturePointer(pressedTextureName));
+    unpressSprite.setTexture(*Textures::textures->getTexturePointer(unpressedTextureName));
 
     pressSprite.setScale(3, 3);
     unpressSprite.setScale(3, 3);

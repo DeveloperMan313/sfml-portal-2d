@@ -2,12 +2,11 @@
 
 namespace game {
 
-Sprite::Sprite(const std::string &textureName, const Textures &textures, int layIndex) : layerIndex(layIndex) {
-  this->setTexture(*textures.getTexturePointer(textureName));
+Sprite::Sprite(const std::string &textureName, size_t layerIdx)
+    : layerIdx(layerIdx) {
+  this->setTexture(*Textures::textures->getTexturePointer(textureName));
 }
 
-void Sprite::setLayerIndex(int& index) {
-  this->layerIndex = index;
-}
+void Sprite::setLayerIdx(size_t idx) { this->layerIdx = idx; }
 
 } // namespace game

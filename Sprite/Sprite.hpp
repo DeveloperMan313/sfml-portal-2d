@@ -2,19 +2,19 @@
 
 #include "../Textures/Textures.hpp"
 #include "SFML/Graphics/Sprite.hpp"
+#include <cstddef>
 #include <string>
 
 namespace game {
 
 class Sprite : public sf::Sprite {
 public:
-  Sprite(const std::string &textureName, const Textures &textures, int layerInd = 0);
+  Sprite(const std::string &textureName, size_t layerIdx = 0);
 
-  void setLayerIndex(int& index);
-  
+  void setLayerIdx(size_t idx);
+
 private:
-  int layerIndex;
-
+  size_t layerIdx;
 };
 
 } // namespace game

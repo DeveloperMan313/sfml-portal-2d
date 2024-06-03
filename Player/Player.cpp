@@ -12,12 +12,12 @@ const sf::Time Player::coyoteTime = sf::milliseconds(50);
 const float Player::moveSpeed = 50.f, Player::moveSharpnessCoef = 1.2f,
             Player::jumpSpeed = 50.f;
 
-Player::Player(const Textures &textures)
-    : RigidBody(ObjectClass::player, "player", textures, false, 50.f, 0.f),
+Player::Player()
+    : RigidBody(ObjectClass::player, "player", false, 50.f, 0.f),
       isStanding(false), isTryingToJump(false), isGoingLeft(false),
       isGoingRight(false) {}
 
-void Player::step(float stepSize) {
+void Player::step() {
   if (this->isTryingToJump) {
     this->tryToJump();
   }
@@ -31,7 +31,6 @@ void Player::step(float stepSize) {
              this->mass,
          0.f});
   }
-  this->RigidBody::step(stepSize);
 }
 
 void Player::tryToJump() {

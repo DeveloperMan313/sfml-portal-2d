@@ -2,8 +2,8 @@
 
 namespace game {
 
-    game::MainMenu::MainMenu(sf::RenderWindow& wind, const Textures& textures) : window(wind) {
-        setupMenu(textures);
+    game::MainMenu::MainMenu(sf::RenderWindow& wind) : window(wind) {
+        setupMenu();
 
     };
 
@@ -52,14 +52,14 @@ namespace game {
 
   }
 
-  void MainMenu::setupMenu(const Textures& textures){
+  void MainMenu::setupMenu(){
     font.loadFromFile("data/fonts/UbuntuSansMono.ttf");
     window.clear();
 
 
-    buttonsPointers[0] = new Button(sf::Vector2f(window.getSize().x / 2 - 150, window.getSize().y / 1.7f - 50), sf::Vector2i(300, 75.f), "pressedButton", "unpressedButton", "START", textures);
-    buttonsPointers[1] = new Button(sf::Vector2f(window.getSize().x / 2 - 150, window.getSize().y / 1.7f + 50), sf::Vector2i(300, 75.f), "pressedButton", "unpressedButton", "OPTIONS", textures);
-    buttonsPointers[2] = new Button(sf::Vector2f(window.getSize().x / 2 - 150, window.getSize().y / 1.7f + 150), sf::Vector2i(300, 75.f), "pressedButton", "unpressedButton", "EXIT", textures);
+    buttonsPointers[0] = new Button(sf::Vector2f(window.getSize().x / 2 - 150, window.getSize().y / 1.7f - 50), sf::Vector2i(300, 75.f), "pressedButton", "unpressedButton", "START");
+    buttonsPointers[1] = new Button(sf::Vector2f(window.getSize().x / 2 - 150, window.getSize().y / 1.7f + 50), sf::Vector2i(300, 75.f), "pressedButton", "unpressedButton", "OPTIONS");
+    buttonsPointers[2] = new Button(sf::Vector2f(window.getSize().x / 2 - 150, window.getSize().y / 1.7f + 150), sf::Vector2i(300, 75.f), "pressedButton", "unpressedButton", "EXIT");
 
   }
 

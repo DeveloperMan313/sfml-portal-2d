@@ -13,8 +13,7 @@ public:
   const portalColor color;
   Wall *basePtr;
 
-  Portal(const Textures &textures, Wall *basePtr_, const sf::Vector2f &facing_,
-         const portalColor color_);
+  Portal(Wall *basePtr_, const sf::Vector2f &facing_, const portalColor color_);
 
   ~Portal() override;
 
