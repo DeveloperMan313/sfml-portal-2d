@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Events/Events.hpp"
-#include "../RigidBody/RigidBody.hpp"
+#include "Events.hpp"
+#include "RigidBody.hpp"
 #include "SFML/System/Clock.hpp"
 #include "SFML/System/Time.hpp"
 

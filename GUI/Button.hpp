@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SFML/Graphics.hpp"
-#include "../Textures/Textures.hpp"
+#include "Textures.hpp"
 #include <string>
 #include <iostream>
 

@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.23)
 
 set(PROJECT "sfml-portal-2d")
+
 project(${PROJECT})
 
 set(CMAKE_CXX_STANDARD 20)
@@ -22,13 +23,27 @@ set(PROJECT_DIRS
     Emitter
     Events)
 
-foreach(PROJECT_DIR IN LISTS PROJECT_DIRS)
-  add_subdirectory(${PROJECT_DIR})
-endforeach()
+set(PROJECT_SOURCES
+    Logic/Logic.cpp
+    Graphics/Graphics.cpp
+    Sprite/Sprite.cpp
+    RigidBody/RigidBody.cpp
+    Textures/Textures.cpp
+    Simulation/Simulation.cpp
+    Math/Math.cpp
+    Hitbox/Hitbox.cpp
+    GUI/Button.cpp
+    GUI/Menu.cpp
+    Player/Player.cpp
+    Portal/Portal.cpp
+    Wall/Wall.cpp
+    Cube/Cube.cpp
+    Emitter/Emitter.cpp
+    Events/Events.cpp)
 
 include_directories(${PROJECT_DIRS})
 
-add_executable(${PROJECT} main.cpp)
+add_executable(${PROJECT} main.cpp ${PROJECT_SOURCES})
 
 set(SFML_STATIC_LIBRARIES TRUE)
 
@@ -37,30 +52,8 @@ find_package(
   COMPONENTS window graphics system
   REQUIRED)
 
-set(GAME_COMPONENTS
-    game-logic
-    game-graphics
-    game-sprite
-    game-rigidbody
-    game-textures
-    game-simulation
-    game-math
-    game-hitbox
-    game-gui
-    game-player
-    game-portal
-    game-wall
-    game-cube
-    game-emitter
-    game-events)
+target_link_libraries(${PROJECT} sfml-window sfml-graphics sfml-system)
 
-set(SFML_COMPONENTS sfml-window sfml-graphics sfml-system)
-
-foreach(PROJECT_COMPONENT IN LISTS GAME_COMPONENTS COMPONENTS PROJECT)
-  target_link_libraries(${PROJECT_COMPONENT} ${SFML_COMPONENTS})
-  if(NOT WIN32)
-    target_link_libraries(${PROJECT_COMPONENT} m)
-  endif()
-endforeach()
-
-target_link_libraries(${PROJECT} ${GAME_COMPONENTS})
+if(NOT WIN32)
+  target_link_libraries(${PROJECT} m)
+endif()

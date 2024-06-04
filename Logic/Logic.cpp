@@ -1,9 +1,9 @@
 #include "Logic.hpp"
-#include "../Simulation/Simulation.hpp"
 #include "SFML/System/Sleep.hpp"
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Event.hpp"
 #include "SFML/Window/Keyboard.hpp"
+#include "Simulation.hpp"
 #include <cstddef>
 #include <vector>
 

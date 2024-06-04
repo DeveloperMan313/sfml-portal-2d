@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Emitter/Emitter.hpp"
+#include "Emitter.hpp"
 #include "SFML/Window/Event.hpp"
 #include "SFML/Window/Keyboard.hpp"
 #include <cstddef>

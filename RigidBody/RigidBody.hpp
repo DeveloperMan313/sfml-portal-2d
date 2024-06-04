@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../Events/Events.hpp"
-#include "../Hitbox/Hitbox.hpp"
-#include "../Sprite/Sprite.hpp"
+#include "Events.hpp"
+#include "Hitbox.hpp"
 #include "SFML/System/Vector2.hpp"
+#include "Sprite.hpp"
 #include <vector>
 
 namespace game {

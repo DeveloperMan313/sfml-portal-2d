@@ -1,5 +1,5 @@
 #include "Simulation.hpp"
-#include "../Math/Math.hpp"
+#include "Math.hpp"
 #include "SFML/System/Vector2.hpp"
 #include <cstddef>
 

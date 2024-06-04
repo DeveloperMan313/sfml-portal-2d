@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Sprite/Sprite.hpp"
+#include "Sprite.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
-#include "../GUI/Menu.hpp"
+#include "Menu.hpp"
 #include <vector>
 #include <functional>
 

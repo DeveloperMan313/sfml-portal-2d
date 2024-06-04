@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../RigidBody/RigidBody.hpp"
+#include "RigidBody.hpp"
 
 namespace game {
 

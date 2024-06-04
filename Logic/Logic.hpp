@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../Emitter/Emitter.hpp"
-#include "../Events/Events.hpp"
-#include "../Graphics/Graphics.hpp"
-#include "../RigidBody/RigidBody.hpp"
-#include "../Sprite/Sprite.hpp"
-#include "../Textures/Textures.hpp"
+#include "Emitter.hpp"
+#include "Events.hpp"
+#include "Graphics.hpp"
+#include "RigidBody.hpp"
 #include "SFML/Window/Event.hpp"
+#include "Sprite.hpp"
+#include "Textures.hpp"
 #include <vector>
 
 namespace game {

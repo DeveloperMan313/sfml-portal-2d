@@ -1,5 +1,5 @@
 #include "Player.hpp"
-#include "../Math/Math.hpp"
+#include "Math.hpp"
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Event.hpp"
 #include "SFML/Window/Keyboard.hpp"

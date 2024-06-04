@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../RigidBody/RigidBody.hpp"
-#include "../Wall/Wall.hpp"
+#include "RigidBody.hpp"
 #include "SFML/System/Vector2.hpp"
+#include "Wall.hpp"
 
 namespace game {
 

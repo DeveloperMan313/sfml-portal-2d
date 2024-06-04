@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../RigidBody/RigidBody.hpp"
+#include "RigidBody.hpp"
 #include "SFML/System/Vector2.hpp"
 
 namespace game {
