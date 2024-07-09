@@ -17,7 +17,7 @@ Logic::Logic(int targetFps_, int physicsStepsPerFrame_)
   this->graphics.setPlayHandler(std::bind(&Logic::handlePlay, this));
   this->graphics.setSettingsHandler(std::bind(&Logic::handleSettings, this));
   this->graphics.setExitHandler(std::bind(&Logic::handleExit, this));
-  Textures::textures->getTexturePointer("wall")->setRepeated(true);
+  Textures::get().getTexturePointer("wall")->setRepeated(true);
 }
 
 Logic::~Logic() {

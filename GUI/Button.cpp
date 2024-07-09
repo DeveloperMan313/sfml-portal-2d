@@ -8,8 +8,8 @@ namespace game {
 
     buttonPressed = false;
 
-    pressSprite.setTexture(*Textures::textures->getTexturePointer(pressedTextureName));
-    unpressSprite.setTexture(*Textures::textures->getTexturePointer(unpressedTextureName));
+    pressSprite.setTexture(*Textures::get().getTexturePointer(pressedTextureName));
+    unpressSprite.setTexture(*Textures::get().getTexturePointer(unpressedTextureName));
 
     pressSprite.setScale(3, 3);
     unpressSprite.setScale(3, 3);

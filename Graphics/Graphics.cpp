@@ -1,17 +1,18 @@
 #include "Graphics.hpp"
+#include "Textures.hpp"
 
 namespace game {
 
 game::Graphics::Graphics() {
   this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "Portal 2D");
+  Textures::createInstance();
   this->menu = new MainMenu(*window);
-
 }
 
 Graphics::~Graphics() {
   this->window->close();
   delete this->window;
-
+  Textures::deleteInstance();
 }
 
 void Graphics::render(const renderModes& renderMode, const std::vector<Sprite*>& sprites){

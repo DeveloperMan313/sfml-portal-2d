@@ -22,7 +22,6 @@ public:
   void run();
 
 private:
-  Textures textures;
   Graphics graphics;
   std::vector<Sprite *> sprites;
   std::vector<RigidBody *> rigidBodies;
