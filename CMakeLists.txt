@@ -23,7 +23,8 @@ set(PROJECT_DIRS
     Emitter
     Events
     Singleton
-    Emitters)
+    Emitters
+    RBController)
 
 set(PROJECT_SOURCES
     Logic/Logic.cpp
@@ -43,7 +44,8 @@ set(PROJECT_SOURCES
     Emitter/Emitter.cpp
     Events/Events.cpp
     Singleton/Singleton.cpp
-    Emitters/Emitters.cpp)
+    Emitters/Emitters.cpp
+    RBController/RBController.cpp)
 
 include_directories(${PROJECT_DIRS})
 

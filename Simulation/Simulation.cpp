@@ -8,7 +8,8 @@ namespace game {
 const sf::Vector2f Simulation::gravityAcc(0.f, 9.81f);
 const float Simulation::collisionShiftCoef = 0.1f;
 
-void Simulation::step(std::vector<RigidBody *> &rigidBodies, float stepSize) {
+void Simulation::step(const std::vector<RigidBody *> &rigidBodies,
+                      float stepSize) {
   const size_t RBsSize = rigidBodies.size();
   for (size_t i = 0; i < RBsSize; ++i) {
     rigidBodies[i]->applyForce(rigidBodies[i]->mass * Simulation::gravityAcc);
@@ -17,7 +18,8 @@ void Simulation::step(std::vector<RigidBody *> &rigidBodies, float stepSize) {
   Simulation::processCollisions(rigidBodies);
 }
 
-void Simulation::processCollisions(std::vector<RigidBody *> &rigidBodies) {
+void Simulation::processCollisions(
+    const std::vector<RigidBody *> &rigidBodies) {
   const size_t RBsSize = rigidBodies.size();
   std::vector<Simulation::collisionInfo> collisions;
   // reserve RBsSize number of collision info to prevent unnecessary allocation

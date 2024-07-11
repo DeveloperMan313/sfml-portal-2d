@@ -7,7 +7,7 @@ namespace game {
 
 class Simulation {
 public:
-  static void step(std::vector<RigidBody *> &rigidBodies, float stepSize);
+  static void step(const std::vector<RigidBody *> &rigidBodies, float stepSize);
 
 private:
   struct collisionInfo {
@@ -17,7 +17,7 @@ private:
   static const sf::Vector2f gravityAcc;
   static const float collisionShiftCoef;
 
-  static void processCollisions(std::vector<RigidBody *> &rigidBodies);
+  static void processCollisions(const std::vector<RigidBody *> &rigidBodies);
 
   static void processHitboxesCollision(const Hitbox &hb1, const Hitbox &hb2,
                                        RigidBody &rb1, RigidBody &rb2,
