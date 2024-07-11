@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Sprite.hpp"
+#include "RigidBody.hpp"
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "Menu.hpp"
 #include <vector>
@@ -18,9 +18,9 @@ public:
 
   ~GraphicsIns();
 
-  void render(const renderModes& renderMode, const std::vector<Sprite*> &sprites);
+  void render(const renderModes& renderMode, const std::vector<RigidBody*> &rbs);
 
-  void renderSprites(const std::vector<Sprite*> &sprites);
+  void renderRBs(const std::vector<RigidBody*> &rbs);
 
   void changeDisplayResolution(std::vector<int> resolution);
 

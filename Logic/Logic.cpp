@@ -38,7 +38,6 @@ void LogicIns::addRigidBody(RigidBody *rigidBody) {
       std::bind(&LogicIns::getRbById, this, std::placeholders::_1),
       std::bind(&LogicIns::getRbByClass, this, std::placeholders::_1,
                 std::placeholders::_2));
-  this->sprites.push_back(rigidBody);
   this->rigidBodies.push_back(rigidBody);
   // rb gets the message of self's addition (may be changed)
   this->emitters.rbAdd.emit({.rbId = rigidBody->id});
@@ -58,7 +57,7 @@ void LogicIns::run() {
       Simulation::step(this->rigidBodies, physicsTimeStep);
     }
     this->removeDestroyed();
-    Graphics::get().render(this->renderMode, this->sprites);
+    Graphics::get().render(this->renderMode, this->rigidBodies);
     // if (this->renderMode == renderModes::gameMode) {
     //   Graphics::get().renderDebug(this->rigidBodies);
     // }
@@ -113,11 +112,6 @@ void LogicIns::removeDestroyed() {
   size_t i = -1;
   std::erase_if(this->rigidBodies,
                 [&idxDestroyed, &i](const game::RigidBody *rb) -> bool {
-                  return idxDestroyed[++i];
-                });
-  i = -1;
-  std::erase_if(this->sprites,
-                [&idxDestroyed, &i](const game::Sprite *sp) -> bool {
                   return idxDestroyed[++i];
                 });
 }

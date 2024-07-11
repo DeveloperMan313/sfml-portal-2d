@@ -15,22 +15,22 @@ GraphicsIns::~GraphicsIns() {
   Textures::deleteInstance();
 }
 
-void GraphicsIns::render(const renderModes& renderMode, const std::vector<Sprite*>& sprites){
+void GraphicsIns::render(const renderModes& renderMode, const std::vector<RigidBody*>& rbs){
   window->clear();
   if (renderMode == renderModes::menuMode) {
       menu->run();
         
   }
   else if (renderMode == renderModes::gameMode) {
-    this->renderSprites(sprites);
+    this->renderRBs(rbs);
   }
 
 }
 
-void GraphicsIns::renderSprites(const std::vector<Sprite*>& sprites) {
+void GraphicsIns::renderRBs(const std::vector<RigidBody*> &rbs) {
   this->window->clear();
-  for (const Sprite *sprite : sprites) {
-    this->window->draw(*sprite);
+  for (const RigidBody *rb : rbs) {
+    this->window->draw(*rb);
   }
   this->window->display();
 

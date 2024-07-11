@@ -5,7 +5,6 @@
 #include "RigidBody.hpp"
 #include "SFML/Window/Event.hpp"
 #include "Singleton.hpp"
-#include "Sprite.hpp"
 #include <vector>
 
 namespace game {
@@ -23,7 +22,6 @@ public:
   void run();
 
 private:
-  std::vector<Sprite *> sprites;
   std::vector<RigidBody *> rigidBodies;
   size_t nextRbId;
   int targetFps, physicsStepsPerFrame;
