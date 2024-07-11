@@ -19,7 +19,7 @@ public:
 
   void handleTeleport(float teleportAngle) override;
 
-  void subscribe(events::Emitters &emitters) override;
+  void subscribe() override;
 
 private:
   bool isStanding, isTryingToJump, isGoingLeft, isGoingRight;

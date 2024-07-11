@@ -1,4 +1,5 @@
 #include "Portal.hpp"
+#include "Emitters.hpp"
 #include "Math.hpp"
 #include "SFML/Graphics/Rect.hpp"
 #include "SFML/System/Vector2.hpp"
@@ -154,10 +155,10 @@ void Portal::setPosition(const sf::Vector2f &position) {
 
 void Portal::setPosition(float x, float y) { this->setPosition({x, y}); }
 
-void Portal::subscribe(events::Emitters &emitters) {
-  emitters.rbAdd.subscribe(
+void Portal::subscribe() {
+  Emitters::get().rbAdd.subscribe(
       this->id, std::bind(&Portal::onRbAdd, this, std::placeholders::_1));
-  emitters.rbRemove.subscribe(
+  Emitters::get().rbRemove.subscribe(
       this->id, std::bind(&Portal::onRbRemove, this, std::placeholders::_1));
 }
 

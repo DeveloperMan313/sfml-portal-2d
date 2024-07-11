@@ -112,7 +112,7 @@ void RigidBody::handleHitboxesCollision(RigidBody &otherRigidBody,
 
 void RigidBody::handleTeleport(float teleportAngle) {}
 
-void RigidBody::subscribe(events::Emitters &emitters) {}
+void RigidBody::subscribe() {}
 
 bool RigidBody::operator==(const RigidBody &other) const {
   return this->id == other.id;

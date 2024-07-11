@@ -22,7 +22,8 @@ set(PROJECT_DIRS
     Cube
     Emitter
     Events
-    Singleton)
+    Singleton
+    Emitters)
 
 set(PROJECT_SOURCES
     Logic/Logic.cpp
@@ -41,7 +42,8 @@ set(PROJECT_SOURCES
     Cube/Cube.cpp
     Emitter/Emitter.cpp
     Events/Events.cpp
-    Singleton/Singleton.cpp)
+    Singleton/Singleton.cpp
+    Emitters/Emitters.cpp)
 
 include_directories(${PROJECT_DIRS})
 

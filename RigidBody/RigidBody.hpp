@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Events.hpp"
 #include "Hitbox.hpp"
 #include "SFML/System/Vector2.hpp"
 #include "Sprite.hpp"
+#include <functional>
 #include <vector>
 
 namespace game {
@@ -64,7 +64,7 @@ public:
 
   virtual void handleTeleport(float teleportAngle);
 
-  virtual void subscribe(events::Emitters &Emitters);
+  virtual void subscribe();
 
   bool operator==(const RigidBody &other) const;
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Events.hpp"
 #include "RigidBody.hpp"
 #include "SFML/System/Vector2.hpp"
 #include "Wall.hpp"
@@ -27,7 +28,7 @@ public:
 
   void setPosition(float x, float y);
 
-  void subscribe(events::Emitters &emitters) override;
+  void subscribe() override;
 
 private:
   void link(const Portal *portalPtr);

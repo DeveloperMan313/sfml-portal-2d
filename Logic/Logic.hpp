@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Events.hpp"
 #include "Graphics.hpp"
 #include "RigidBody.hpp"
 #include "SFML/Window/Event.hpp"
@@ -27,7 +26,6 @@ private:
   int targetFps, physicsStepsPerFrame;
   renderModes renderMode;
   bool isRunning;
-  events::Emitters emitters;
   std::vector<bool> keyStatus;
 
   bool changesKeyStatus(const sf::Event &event);

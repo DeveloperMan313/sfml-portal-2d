@@ -1,4 +1,5 @@
 #include "Logic.hpp"
+#include "Emitters.hpp"
 #include "SFML/System/Sleep.hpp"
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Event.hpp"
@@ -14,6 +15,7 @@ LogicIns::LogicIns(int targetFps_, int physicsStepsPerFrame_)
       physicsStepsPerFrame(physicsStepsPerFrame_),
       renderMode(renderModes::menuMode), isRunning(true),
       keyStatus(sf::Keyboard::KeyCount, false) {
+  Emitters::createInstance();
   Graphics::createInstance();
   Graphics::get().setPlayHandler(std::bind(&LogicIns::handlePlay, this));
   Graphics::get().setSettingsHandler(
@@ -28,19 +30,20 @@ LogicIns::~LogicIns() {
   }
   this->removeDestroyed();
   Graphics::deleteInstance();
+  Emitters::deleteInstance();
 }
 
 void LogicIns::addRigidBody(RigidBody *rigidBody) {
   rigidBody->id = this->nextRbId;
   ++this->nextRbId;
-  rigidBody->subscribe(this->emitters);
+  rigidBody->subscribe();
   rigidBody->setCallbacks(
       std::bind(&LogicIns::getRbById, this, std::placeholders::_1),
       std::bind(&LogicIns::getRbByClass, this, std::placeholders::_1,
                 std::placeholders::_2));
   this->rigidBodies.push_back(rigidBody);
   // rb gets the message of self's addition (may be changed)
-  this->emitters.rbAdd.emit({.rbId = rigidBody->id});
+  Emitters::get().rbAdd.emit({.rbId = rigidBody->id});
 }
 
 void LogicIns::run() {
@@ -84,7 +87,7 @@ void LogicIns::handleEvents() {
     case sf::Event::KeyPressed:
     case sf::Event::KeyReleased:
       if (this->changesKeyStatus(event)) {
-        this->emitters.keyboard.emit(
+        Emitters::get().keyboard.emit(
             {.type = event.type, .key = event.key.code});
       }
       break;
@@ -102,11 +105,11 @@ void LogicIns::removeDestroyed() {
       continue;
     }
     idxDestroyed[i] = true;
-    emitters.keyboard.unsubscribeOwner(rigidBody->id);
-    emitters.rbAdd.unsubscribeOwner(rigidBody->id);
-    emitters.rbRemove.unsubscribeOwner(rigidBody->id);
+    Emitters::get().keyboard.unsubscribeOwner(rigidBody->id);
+    Emitters::get().rbAdd.unsubscribeOwner(rigidBody->id);
+    Emitters::get().rbRemove.unsubscribeOwner(rigidBody->id);
     // rb doesn't get the message of self's removal, destructor should be used
-    this->emitters.rbRemove.emit({.rbId = rigidBody->id});
+    Emitters::get().rbRemove.emit({.rbId = rigidBody->id});
     delete rigidBody;
   }
   size_t i = -1;

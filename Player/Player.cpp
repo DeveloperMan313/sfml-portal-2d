@@ -1,4 +1,5 @@
 #include "Player.hpp"
+#include "Emitters.hpp"
 #include "Math.hpp"
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Event.hpp"
@@ -84,8 +85,8 @@ void Player::handleTeleport(float teleportAngle) {
   }
 }
 
-void Player::subscribe(events::Emitters &emitters) {
-  emitters.keyboard.subscribe(
+void Player::subscribe() {
+  Emitters::get().keyboard.subscribe(
       this->id, std::bind(&Player::onKeyboard, this, std::placeholders::_1));
 }
 
