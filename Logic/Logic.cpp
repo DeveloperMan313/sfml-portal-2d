@@ -9,31 +9,34 @@
 
 namespace game {
 
-Logic::Logic(int targetFps_, int physicsStepsPerFrame_)
+LogicIns::LogicIns(int targetFps_, int physicsStepsPerFrame_)
     : nextRbId(1), targetFps(targetFps_),
       physicsStepsPerFrame(physicsStepsPerFrame_),
       renderMode(renderModes::menuMode), isRunning(true),
       keyStatus(sf::Keyboard::KeyCount, false) {
-  this->graphics.setPlayHandler(std::bind(&Logic::handlePlay, this));
-  this->graphics.setSettingsHandler(std::bind(&Logic::handleSettings, this));
-  this->graphics.setExitHandler(std::bind(&Logic::handleExit, this));
+  Graphics::createInstance();
+  Graphics::get().setPlayHandler(std::bind(&LogicIns::handlePlay, this));
+  Graphics::get().setSettingsHandler(
+      std::bind(&LogicIns::handleSettings, this));
+  Graphics::get().setExitHandler(std::bind(&LogicIns::handleExit, this));
   Textures::get().getTexturePointer("wall")->setRepeated(true);
 }
 
-Logic::~Logic() {
+LogicIns::~LogicIns() {
   for (RigidBody *rb : this->rigidBodies) {
     rb->isDestroyed = true;
   }
   this->removeDestroyed();
+  Graphics::deleteInstance();
 }
 
-void Logic::addRigidBody(RigidBody *rigidBody) {
+void LogicIns::addRigidBody(RigidBody *rigidBody) {
   rigidBody->id = this->nextRbId;
   ++this->nextRbId;
   rigidBody->subscribe(this->emitters);
   rigidBody->setCallbacks(
-      std::bind(&Logic::getRbById, this, std::placeholders::_1),
-      std::bind(&Logic::getRbByClass, this, std::placeholders::_1,
+      std::bind(&LogicIns::getRbById, this, std::placeholders::_1),
+      std::bind(&LogicIns::getRbByClass, this, std::placeholders::_1,
                 std::placeholders::_2));
   this->sprites.push_back(rigidBody);
   this->rigidBodies.push_back(rigidBody);
@@ -41,7 +44,7 @@ void Logic::addRigidBody(RigidBody *rigidBody) {
   this->emitters.rbAdd.emit({.rbId = rigidBody->id});
 }
 
-void Logic::run() {
+void LogicIns::run() {
   const float frameDuration = 1.f / this->targetFps;
   const float physicsTimeStep = frameDuration / this->physicsStepsPerFrame;
   while (this->isRunning) {
@@ -55,15 +58,15 @@ void Logic::run() {
       Simulation::step(this->rigidBodies, physicsTimeStep);
     }
     this->removeDestroyed();
-    graphics.render(this->renderMode, this->sprites);
+    Graphics::get().render(this->renderMode, this->sprites);
     // if (this->renderMode == renderModes::gameMode) {
-    //   graphics.renderDebug(this->rigidBodies);
+    //   Graphics::get().renderDebug(this->rigidBodies);
     // }
     sf::sleep(sf::seconds(frameDuration));
   }
 }
 
-bool Logic::changesKeyStatus(const sf::Event &event) {
+bool LogicIns::changesKeyStatus(const sf::Event &event) {
   const bool status = event.type == sf::Event::KeyPressed;
   if (this->keyStatus[event.key.code] != status) {
     this->keyStatus[event.key.code] = status;
@@ -72,9 +75,9 @@ bool Logic::changesKeyStatus(const sf::Event &event) {
   return false;
 }
 
-void Logic::handleEvents() {
+void LogicIns::handleEvents() {
   sf::Event event;
-  while (this->graphics.pollEvent(event)) {
+  while (Graphics::get().pollEvent(event)) {
     switch (event.type) {
     case sf::Event::Closed:
       this->handleExit();
@@ -92,7 +95,7 @@ void Logic::handleEvents() {
   }
 }
 
-void Logic::removeDestroyed() {
+void LogicIns::removeDestroyed() {
   std::vector<bool> idxDestroyed(this->rigidBodies.size(), false);
   for (size_t i = 0; i < this->rigidBodies.size(); ++i) {
     RigidBody *rigidBody = this->rigidBodies[i];
@@ -119,7 +122,7 @@ void Logic::removeDestroyed() {
                 });
 }
 
-RigidBody *Logic::getRbById(size_t id) {
+RigidBody *LogicIns::getRbById(size_t id) {
   for (RigidBody *rb : this->rigidBodies) {
     if (rb->id == id) {
       return rb;
@@ -128,7 +131,7 @@ RigidBody *Logic::getRbById(size_t id) {
   return nullptr;
 }
 
-RigidBody *Logic::getRbByClass(ObjectClass objectClass, size_t number) {
+RigidBody *LogicIns::getRbByClass(ObjectClass objectClass, size_t number) {
   for (RigidBody *rb : this->rigidBodies) {
     if (rb->objectClass == objectClass) {
       if (number == 0) {
@@ -140,10 +143,12 @@ RigidBody *Logic::getRbByClass(ObjectClass objectClass, size_t number) {
   return nullptr;
 }
 
-void Logic::handlePlay() { this->renderMode = renderModes::gameMode; }
+void LogicIns::handlePlay() { this->renderMode = renderModes::gameMode; }
 
-void Logic::handleSettings() {}
+void LogicIns::handleSettings() {}
 
-void Logic::handleExit() { this->isRunning = false; }
+void LogicIns::handleExit() { this->isRunning = false; }
+
+void LogicIns::operator delete(void *ptr) noexcept {};
 
 } // namespace game

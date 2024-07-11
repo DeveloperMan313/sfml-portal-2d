@@ -1,28 +1,28 @@
 #pragma once
 
-#include "Emitter.hpp"
 #include "Events.hpp"
 #include "Graphics.hpp"
 #include "RigidBody.hpp"
 #include "SFML/Window/Event.hpp"
+#include "Singleton.hpp"
 #include "Sprite.hpp"
-#include "Textures.hpp"
 #include <vector>
 
 namespace game {
 
-class Logic {
-public:
-  Logic(int targetFps_, int physicsStepsPerFrame_);
+class LogicIns {
+  friend class Singleton<LogicIns, int, int>;
 
-  ~Logic();
+public:
+  LogicIns(int targetFps_, int physicsStepsPerFrame_);
+
+  ~LogicIns();
 
   void addRigidBody(RigidBody *rigidBody); // public for testing
 
   void run();
 
 private:
-  Graphics graphics;
   std::vector<Sprite *> sprites;
   std::vector<RigidBody *> rigidBodies;
   size_t nextRbId;
@@ -47,6 +47,10 @@ private:
   void handleSettings();
 
   void handleExit();
+
+  void operator delete(void *ptr) noexcept;
 };
+
+using Logic = Singleton<LogicIns, int, int>;
 
 } // namespace game

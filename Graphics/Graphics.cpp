@@ -3,19 +3,19 @@
 
 namespace game {
 
-game::Graphics::Graphics() {
+game::GraphicsIns::GraphicsIns() {
   this->window = new sf::RenderWindow(sf::VideoMode(1280, 720), "Portal 2D");
   Textures::createInstance();
   this->menu = new MainMenu(*window);
 }
 
-Graphics::~Graphics() {
+GraphicsIns::~GraphicsIns() {
   this->window->close();
   delete this->window;
   Textures::deleteInstance();
 }
 
-void Graphics::render(const renderModes& renderMode, const std::vector<Sprite*>& sprites){
+void GraphicsIns::render(const renderModes& renderMode, const std::vector<Sprite*>& sprites){
   window->clear();
   if (renderMode == renderModes::menuMode) {
       menu->run();
@@ -27,7 +27,7 @@ void Graphics::render(const renderModes& renderMode, const std::vector<Sprite*>&
 
 }
 
-void Graphics::renderSprites(const std::vector<Sprite*>& sprites) {
+void GraphicsIns::renderSprites(const std::vector<Sprite*>& sprites) {
   this->window->clear();
   for (const Sprite *sprite : sprites) {
     this->window->draw(*sprite);
@@ -36,44 +36,44 @@ void Graphics::renderSprites(const std::vector<Sprite*>& sprites) {
 
 }
 
-void Graphics::changeDisplayResolution(std::vector<int> resolution){
+void GraphicsIns::changeDisplayResolution(std::vector<int> resolution){
   this->window->close();
   delete this->window;
   this->window = new sf::RenderWindow(sf::VideoMode(resolution[0], resolution[1]), "Portal 2D");
 
 }
 
-bool Graphics::pollEvent(sf::Event& event){
+bool GraphicsIns::pollEvent(sf::Event& event){
     return this->window->pollEvent(event);
 
 }
 
-void Graphics::closeWindow(){
+void GraphicsIns::closeWindow(){
   this->window->close();
   delete this->window;
 
 }
 
-void Graphics::setLevelSize(const sf::Vector2i& size){
+void GraphicsIns::setLevelSize(const sf::Vector2i& size){
   view.setSize(size.x, size.y);
 }
 
-void Graphics::setPlayHandler(const std::function<void(void)>& ph){
+void GraphicsIns::setPlayHandler(const std::function<void(void)>& ph){
   menu->playHandler = ph;
 
 }
 
-void Graphics::setSettingsHandler(const std::function<void(void)>& sh){
+void GraphicsIns::setSettingsHandler(const std::function<void(void)>& sh){
   menu->settingHandler = sh;
 
 }
 
-void Graphics::setExitHandler(const std::function<void(void)>& eh){
+void GraphicsIns::setExitHandler(const std::function<void(void)>& eh){
   menu->exitHandler = eh;
 
 }
 
-void Graphics::setGameMode(const renderModes& gameMode)
+void GraphicsIns::setGameMode(const renderModes& gameMode)
 {
   this->gameMode = gameMode;
   if (gameMode == renderModes::menuMode)
@@ -81,5 +81,7 @@ void Graphics::setGameMode(const renderModes& gameMode)
   else 
     this->window->setView(this->view);
 }
+
+void GraphicsIns::operator delete(void *ptr) noexcept {};
 
 } // namespace game

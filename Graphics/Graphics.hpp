@@ -10,11 +10,13 @@ namespace game {
 
 enum class renderModes { gameMode, menuMode };
 
-class Graphics {
-public:
-  Graphics();
+class GraphicsIns {
+  friend class Singleton<GraphicsIns>;
 
-  ~Graphics();
+public:
+  GraphicsIns();
+
+  ~GraphicsIns();
 
   void render(const renderModes& renderMode, const std::vector<Sprite*> &sprites);
 
@@ -45,6 +47,9 @@ private:
 
   sf::View view;
 
+  void operator delete(void *ptr) noexcept;
 };
+
+using Graphics = Singleton<GraphicsIns>;
 
 } // namespace game
