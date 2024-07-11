@@ -1,9 +1,9 @@
 #pragma once
 
-#include "SFML/Graphics.hpp"
-#include "Textures.hpp"
+#include "SFML/System/Vector2.hpp"
+#include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/Text.hpp"
 #include <string>
-#include <iostream>
 
 namespace game {
 

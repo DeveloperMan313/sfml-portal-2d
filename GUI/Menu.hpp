@@ -1,9 +1,8 @@
 #pragma once
 
-#include "SFML/Graphics.hpp"
 #include "Button.hpp"
+#include "SFML/Graphics/RenderWindow.hpp"
 #include <functional>
-#include <iostream>
 
 namespace game {
 

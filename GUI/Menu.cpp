@@ -1,4 +1,5 @@
 #include "Menu.hpp"
+#include "SFML/Window/Event.hpp"
 
 namespace game {
 
