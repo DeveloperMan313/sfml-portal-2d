@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Graphics.hpp"
-#include "RigidBody.hpp"
+#include "Renderer.hpp"
 #include "SFML/Window/Event.hpp"
 #include "Singleton.hpp"
 #include <vector>

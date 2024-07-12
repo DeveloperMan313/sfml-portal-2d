@@ -7,6 +7,7 @@
 #include "SFML/Window/Event.hpp"
 #include "SFML/Window/Keyboard.hpp"
 #include "Simulation.hpp"
+#include "Textures.hpp"
 #include <cstddef>
 #include <vector>
 
@@ -17,18 +18,18 @@ LogicIns::LogicIns(int targetFps_, int physicsStepsPerFrame_)
       renderMode(renderModes::menuMode), isRunning(true),
       keyStatus(sf::Keyboard::KeyCount, false) {
   Emitters::createInstance();
-  Graphics::createInstance();
-  Graphics::get().setPlayHandler(std::bind(&LogicIns::handlePlay, this));
-  Graphics::get().setSettingsHandler(
+  Renderer::createInstance();
+  Renderer::get().setPlayHandler(std::bind(&LogicIns::handlePlay, this));
+  Renderer::get().setSettingsHandler(
       std::bind(&LogicIns::handleSettings, this));
-  Graphics::get().setExitHandler(std::bind(&LogicIns::handleExit, this));
+  Renderer::get().setExitHandler(std::bind(&LogicIns::handleExit, this));
   Textures::get().getTexturePointer("wall")->setRepeated(true);
   RBController::createInstance();
 }
 
 LogicIns::~LogicIns() {
   RBController::deleteInstance();
-  Graphics::deleteInstance();
+  Renderer::deleteInstance();
   Emitters::deleteInstance();
 }
 
@@ -47,7 +48,7 @@ void LogicIns::run() {
       Simulation::step(rigidBodies, physicsTimeStep);
     }
     RBController::get().removeDestroyed();
-    Graphics::get().render(this->renderMode, rigidBodies);
+    Renderer::get().render(this->renderMode, rigidBodies);
     // if (this->renderMode == renderModes::gameMode) {
     //   Graphics::get().renderDebug(rigidBodies);
     // }
@@ -66,7 +67,7 @@ bool LogicIns::changesKeyStatus(const sf::Event &event) {
 
 void LogicIns::handleEvents() {
   sf::Event event;
-  while (Graphics::get().pollEvent(event)) {
+  while (Renderer::get().pollEvent(event)) {
     switch (event.type) {
     case sf::Event::Closed:
       this->handleExit();

@@ -7,45 +7,43 @@ project(${PROJECT})
 set(CMAKE_CXX_STANDARD 20)
 
 set(PROJECT_DIRS
-    Logic
-    Graphics
-    Sprite
-    RigidBody
-    Textures
-    Simulation
-    Math
-    Hitbox
-    GUI
-    Player
-    Portal
-    Wall
-    Cube
-    Emitter
-    Events
-    Singleton
-    Emitters
-    RBController)
+    base/Logic
+    base/Math
+    base/Singleton
+    events/Emitter
+    events/Emitters
+    graphics/GUI
+    graphics/Renderer
+    graphics/Sprite
+    graphics/Textures
+    objects/Cube
+    objects/Player
+    objects/Portal
+    objects/Wall
+    physics/Hitbox
+    physics/RBController
+    physics/RigidBody
+    physics/Simulation)
 
 set(PROJECT_SOURCES
-    Logic/Logic.cpp
-    Graphics/Graphics.cpp
-    Sprite/Sprite.cpp
-    RigidBody/RigidBody.cpp
-    Textures/Textures.cpp
-    Simulation/Simulation.cpp
-    Math/Math.cpp
-    Hitbox/Hitbox.cpp
-    GUI/Button.cpp
-    GUI/Menu.cpp
-    Player/Player.cpp
-    Portal/Portal.cpp
-    Wall/Wall.cpp
-    Cube/Cube.cpp
-    Emitter/Emitter.cpp
-    Events/Events.cpp
-    Singleton/Singleton.cpp
-    Emitters/Emitters.cpp
-    RBController/RBController.cpp)
+    base/Logic/Logic.cpp
+    base/Math/Math.cpp
+    base/Singleton/Singleton.cpp
+    events/Emitter/Emitter.cpp
+    events/Emitters/Emitters.cpp
+    graphics/GUI/Button.cpp
+    graphics/GUI/Menu.cpp
+    graphics/Renderer/Renderer.cpp
+    graphics/Sprite/Sprite.cpp
+    graphics/Textures/Textures.cpp
+    objects/Cube/Cube.cpp
+    objects/Player/Player.cpp
+    objects/Portal/Portal.cpp
+    objects/Wall/Wall.cpp
+    physics/Hitbox/Hitbox.cpp
+    physics/RBController/RBController.cpp
+    physics/RigidBody/RigidBody.cpp
+    physics/Simulation/Simulation.cpp)
 
 include_directories(${PROJECT_DIRS})
 

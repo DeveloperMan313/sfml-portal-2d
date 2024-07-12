@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RigidBody.hpp"
+#include "Singleton.hpp"
 #include <vector>
 
 namespace game {

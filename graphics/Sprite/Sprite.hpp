@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SFML/Graphics/Sprite.hpp"
-#include "Textures.hpp"
 #include <cstddef>
 #include <string>
 

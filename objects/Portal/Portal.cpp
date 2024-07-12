@@ -1,5 +1,4 @@
 #include "Portal.hpp"
-#include "Emitters.hpp"
 #include "Math.hpp"
 #include "SFML/Graphics/Rect.hpp"
 #include "SFML/System/Vector2.hpp"

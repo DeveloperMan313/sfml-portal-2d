@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Events.hpp"
+#include "Emitters.hpp"
 #include "RigidBody.hpp"
 #include "SFML/System/Vector2.hpp"
 #include "Wall.hpp"

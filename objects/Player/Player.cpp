@@ -1,5 +1,4 @@
 #include "Player.hpp"
-#include "Emitters.hpp"
 #include "Math.hpp"
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Event.hpp"

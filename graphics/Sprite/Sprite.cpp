@@ -1,4 +1,5 @@
 #include "Sprite.hpp"
+#include "Textures.hpp"
 
 namespace game {
 
