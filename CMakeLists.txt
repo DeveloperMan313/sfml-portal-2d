@@ -20,6 +20,7 @@ set(PROJECT_DIRS
     objects/Cube
     objects/Player
     objects/Portal
+    objects/PortalProjectile
     objects/Wall
     physics/Hitbox
     physics/RBController
@@ -41,6 +42,7 @@ set(PROJECT_SOURCES
     objects/Cube/Cube.cpp
     objects/Player/Player.cpp
     objects/Portal/Portal.cpp
+    objects/PortalProjectile/PortalProjectile.cpp
     objects/Wall/Wall.cpp
     physics/Hitbox/Hitbox.cpp
     physics/RBController/RBController.cpp

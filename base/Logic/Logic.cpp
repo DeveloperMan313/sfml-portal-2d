@@ -37,8 +37,8 @@ LogicIns::~LogicIns() {
 void LogicIns::run() {
   const float frameDuration = 1.f / this->targetFps;
   const float physicsTimeStep = frameDuration / this->physicsStepsPerFrame;
-  const std::vector<RigidBody *> rigidBodies = RBController::get().getRBs();
   while (this->isRunning) {
+    std::vector<RigidBody *> rigidBodies = RBController::get().getRBs();
     if (this->renderMode == renderModes::gameMode) {
       this->handleEvents();
     }
@@ -49,6 +49,7 @@ void LogicIns::run() {
       Simulation::step(rigidBodies, physicsTimeStep);
     }
     RBController::get().removeDestroyed();
+    rigidBodies = RBController::get().getRBs();
     Renderer::get().render(this->renderMode, rigidBodies);
     // if (this->renderMode == renderModes::gameMode) {
     //   Graphics::get().renderDebug(rigidBodies);

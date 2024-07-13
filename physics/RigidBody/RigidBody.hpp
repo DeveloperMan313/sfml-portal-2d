@@ -7,7 +7,7 @@
 
 namespace game {
 
-enum class ObjectClass { wall, player, portal, cube };
+enum class ObjectClass { cube, player, portal, portalProjectile, wall };
 
 class RigidBody : public Sprite {
 public:
@@ -63,8 +63,10 @@ public:
 
   bool operator!=(const RigidBody &other) const;
 
-private:
+protected:
   sf::Vector2f force;
+
+private:
   float bounciness;
 };
 

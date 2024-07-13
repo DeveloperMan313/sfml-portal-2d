@@ -59,6 +59,7 @@ void RBControllerIns::clear() {
 
 void RBControllerIns::deleteRB(const RigidBody *rigidBody) const {
   Emitters::get().keyboard.unsubscribeOwner(rigidBody->id);
+  Emitters::get().mouse.unsubscribeOwner(rigidBody->id);
   Emitters::get().rbAdd.unsubscribeOwner(rigidBody->id);
   Emitters::get().rbRemove.unsubscribeOwner(rigidBody->id);
   // rb doesn't get the message of self's removal, destructor should be used
