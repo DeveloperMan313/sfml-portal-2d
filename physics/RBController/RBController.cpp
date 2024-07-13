@@ -13,10 +13,6 @@ void RBControllerIns::addRigidBody(RigidBody *rigidBody) {
   rigidBody->id = this->nextRbId;
   ++this->nextRbId;
   rigidBody->subscribe();
-  rigidBody->setCallbacks(
-      std::bind(&RBControllerIns::getRbById, this, std::placeholders::_1),
-      std::bind(&RBControllerIns::getRbByClass, this, std::placeholders::_1,
-                std::placeholders::_2));
   this->rigidBodies.push_back(rigidBody);
   // rb gets the message of self's addition (may be changed)
   Emitters::get().rbAdd.emit({.rbId = rigidBody->id});

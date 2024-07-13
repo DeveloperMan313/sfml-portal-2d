@@ -1,5 +1,6 @@
 #include "Portal.hpp"
 #include "Math.hpp"
+#include "RBController.hpp"
 #include "SFML/Graphics/Rect.hpp"
 #include "SFML/System/Vector2.hpp"
 #include <algorithm>
@@ -175,7 +176,7 @@ void Portal::onRbAdd(const events::RigidBody &event) {
   if (event.rbId == this->id) {
     return;
   }
-  RigidBody *rb = this->getRbById(event.rbId);
+  RigidBody *rb = RBController::get().getRbById(event.rbId);
   if (rb->objectClass == ObjectClass::portal) {
     Portal *other = dynamic_cast<Portal *>(rb);
     this->link(other);
@@ -184,7 +185,7 @@ void Portal::onRbAdd(const events::RigidBody &event) {
 }
 
 void Portal::onRbRemove(const events::RigidBody &event) {
-  RigidBody *rb = this->getRbById(event.rbId);
+  RigidBody *rb = RBController::get().getRbById(event.rbId);
   if (rb->objectClass == ObjectClass::portal) {
     Portal *other = dynamic_cast<Portal *>(rb);
     this->link(nullptr);

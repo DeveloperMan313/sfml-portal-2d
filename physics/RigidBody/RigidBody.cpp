@@ -100,12 +100,6 @@ bool RigidBody::intersects(const RigidBody &other) const {
   return false;
 }
 
-void RigidBody::setCallbacks(const getRbByIdT &getRbById_,
-                             const getRbByClassT &getRbByClass_) {
-  this->getRbById = getRbById_;
-  this->getRbByClass = getRbByClass_;
-}
-
 void RigidBody::handleHitboxesCollision(RigidBody &otherRigidBody,
                                         const Hitbox &otherHitbox,
                                         const sf::Vector2f &normal) {}

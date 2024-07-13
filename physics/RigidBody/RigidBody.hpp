@@ -3,7 +3,6 @@
 #include "Hitbox.hpp"
 #include "SFML/System/Vector2.hpp"
 #include "Sprite.hpp"
-#include <functional>
 #include <vector>
 
 namespace game {
@@ -12,9 +11,6 @@ enum class ObjectClass { wall, player, portal, cube };
 
 class RigidBody : public Sprite {
 public:
-  typedef std::function<RigidBody *(size_t)> getRbByIdT;
-  typedef std::function<RigidBody *(ObjectClass, size_t)> getRbByClassT;
-
   size_t id;
   ObjectClass objectClass;
   bool isStatic, isDestroyed;
@@ -55,9 +51,6 @@ public:
 
   bool intersects(const RigidBody &other) const;
 
-  void setCallbacks(const getRbByIdT &getRbById_,
-                    const getRbByClassT &getRbByClass_);
-
   virtual void handleHitboxesCollision(RigidBody &otherRigidBody,
                                        const Hitbox &otherHitbox,
                                        const sf::Vector2f &normal);
@@ -69,10 +62,6 @@ public:
   bool operator==(const RigidBody &other) const;
 
   bool operator!=(const RigidBody &other) const;
-
-protected:
-  getRbByIdT getRbById;
-  getRbByClassT getRbByClass;
 
 private:
   sf::Vector2f force;
