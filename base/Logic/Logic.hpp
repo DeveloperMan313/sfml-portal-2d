@@ -1,9 +1,7 @@
 #pragma once
 
 #include "Renderer.hpp"
-#include "SFML/Window/Event.hpp"
 #include "Singleton.hpp"
-#include <vector>
 
 namespace game {
 
@@ -21,9 +19,6 @@ private:
   int targetFps, physicsStepsPerFrame;
   renderModes renderMode;
   bool isRunning;
-  std::vector<bool> keyStatus;
-
-  bool changesKeyStatus(const sf::Event &event);
 
   void handleEvents();
 

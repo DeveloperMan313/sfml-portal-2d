@@ -10,6 +10,7 @@ set(PROJECT_DIRS
     base/Logic
     base/Math
     base/Singleton
+    base/UserInput
     events/Emitter
     events/Emitters
     graphics/GUI
@@ -29,6 +30,7 @@ set(PROJECT_SOURCES
     base/Logic/Logic.cpp
     base/Math/Math.cpp
     base/Singleton/Singleton.cpp
+    base/UserInput/UserInput.cpp
     events/Emitter/Emitter.cpp
     events/Emitters/Emitters.cpp
     graphics/GUI/Button.cpp

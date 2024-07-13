@@ -5,9 +5,9 @@
 #include "SFML/System/Sleep.hpp"
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Event.hpp"
-#include "SFML/Window/Keyboard.hpp"
 #include "Simulation.hpp"
 #include "Textures.hpp"
+#include "UserInput.hpp"
 #include <cstddef>
 #include <vector>
 
@@ -15,8 +15,7 @@ namespace game {
 
 LogicIns::LogicIns(int targetFps_, int physicsStepsPerFrame_)
     : targetFps(targetFps_), physicsStepsPerFrame(physicsStepsPerFrame_),
-      renderMode(renderModes::menuMode), isRunning(true),
-      keyStatus(sf::Keyboard::KeyCount, false) {
+      renderMode(renderModes::menuMode), isRunning(true) {
   Emitters::createInstance();
   Renderer::createInstance();
   Renderer::get().setPlayHandler(std::bind(&LogicIns::handlePlay, this));
@@ -25,9 +24,11 @@ LogicIns::LogicIns(int targetFps_, int physicsStepsPerFrame_)
   Renderer::get().setExitHandler(std::bind(&LogicIns::handleExit, this));
   Textures::get().getTexturePointer("wall")->setRepeated(true);
   RBController::createInstance();
+  UserInput::createInstance();
 }
 
 LogicIns::~LogicIns() {
+  UserInput::deleteInstance();
   RBController::deleteInstance();
   Renderer::deleteInstance();
   Emitters::deleteInstance();
@@ -56,28 +57,15 @@ void LogicIns::run() {
   }
 }
 
-bool LogicIns::changesKeyStatus(const sf::Event &event) {
-  const bool status = event.type == sf::Event::KeyPressed;
-  if (this->keyStatus[event.key.code] != status) {
-    this->keyStatus[event.key.code] = status;
-    return true;
-  }
-  return false;
-}
-
 void LogicIns::handleEvents() {
   sf::Event event;
   while (Renderer::get().pollEvent(event)) {
+    if (UserInput::get().checkProcessEvent(event)) {
+      continue;
+    }
     switch (event.type) {
     case sf::Event::Closed:
       this->handleExit();
-      break;
-    case sf::Event::KeyPressed:
-    case sf::Event::KeyReleased:
-      if (this->changesKeyStatus(event)) {
-        Emitters::get().keyboard.emit(
-            {.type = event.type, .key = event.key.code});
-      }
       break;
     default:
       break;
