@@ -1,5 +1,6 @@
 #include "UserInput.hpp"
 #include "Emitters.hpp"
+#include <SFML/System/Vector2.hpp>
 
 namespace game {
 
@@ -13,6 +14,13 @@ bool UserInputIns::checkProcessEvent(const sf::Event &event) {
       Emitters::get().keyboard.emit(
           {.type = event.type, .key = event.key.code});
     }
+    return true;
+  case sf::Event::MouseButtonPressed:
+  case sf::Event::MouseButtonReleased:
+    Emitters::get().mouse.emit(
+        {.type = event.type,
+         .button = event.mouseButton.button,
+         .mousePos = sf::Vector2f(event.mouseButton.x, event.mouseButton.y)});
     return true;
   default:
     break;
