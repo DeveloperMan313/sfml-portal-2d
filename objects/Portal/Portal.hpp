@@ -7,14 +7,14 @@
 
 namespace game {
 
-enum class portalColor { blue, red };
+enum class PortalColor { blue, red };
 
 class Portal : public RigidBody {
 public:
-  const portalColor color;
+  const PortalColor color;
   Wall *basePtr;
 
-  Portal(Wall *basePtr_, const sf::Vector2f &facing_, const portalColor color_);
+  Portal(Wall *basePtr_, const sf::Vector2f &facing_, const PortalColor color_);
 
   ~Portal() override;
 

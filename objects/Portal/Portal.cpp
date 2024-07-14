@@ -10,9 +10,9 @@ namespace game {
 const float Portal::baseCutoffMinGap = 10.f;
 
 Portal::Portal(Wall *basePtr_, const sf::Vector2f &facing_,
-               const portalColor color_)
+               const PortalColor color_)
     : RigidBody(ObjectClass::portal,
-                (color_ == portalColor::blue) ? "portalBlue" : "portalRed",
+                (color_ == PortalColor::blue) ? "portalBlue" : "portalRed",
                 true),
       basePtr(basePtr_), facing(facing_), singularityPoint({0.f, 0.f}),
       color(color_), linkedPortal(nullptr), teleportAngle(0.f) {
