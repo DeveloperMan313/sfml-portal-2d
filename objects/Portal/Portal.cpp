@@ -4,6 +4,7 @@
 #include "SFML/Graphics/Rect.hpp"
 #include "SFML/System/Vector2.hpp"
 #include <algorithm>
+#include <stdexcept>
 
 namespace game {
 
@@ -14,8 +15,26 @@ Portal::Portal(Wall *basePtr_, const sf::Vector2f &facing_,
     : RigidBody(ObjectClass::portal,
                 (color_ == PortalColor::blue) ? "portalBlue" : "portalRed",
                 true),
-      basePtr(basePtr_), facing(facing_), singularityPoint({0.f, 0.f}),
-      color(color_), linkedPortal(nullptr), teleportAngle(0.f) {
+      basePtr(basePtr_), singularityPoint({0.f, 0.f}), color(color_),
+      linkedPortal(nullptr), teleportAngle(0.f) {
+  const float facingEps = 1e-6;
+  if (std::abs(Math::magnitude(facing_) - 1.f) > facingEps) {
+    throw std::runtime_error("facing_ should be of magnitude 1");
+  }
+  const float facingAngle = Math::fullAngle({1.f, 0.f}, facing_);
+  if (std::abs(facingAngle - -1.f * Math::PI) < facingEps) {
+    this->facing = {-1.f, 0.f};
+  } else if (std::abs(facingAngle - -0.5f * Math::PI) < facingEps) {
+    this->facing = {0.f, -1.f};
+  } else if (std::abs(facingAngle - 0.f) < facingEps) {
+    this->facing = {1.f, 0.f};
+  } else if (std::abs(facingAngle - 0.5f * Math::PI) < facingEps) {
+    this->facing = {0.f, 1.f};
+  } else if (std::abs(facingAngle - 1.f * Math::PI) < facingEps) {
+    this->facing = {-1.f, 0.f};
+  } else {
+    throw std::runtime_error("facing_ should be parallel to axis X or Y");
+  }
   const sf::FloatRect thisBounds = this->getGlobalBounds(),
                       baseBounds = basePtr_->getGlobalBounds();
   if (std::abs(this->facing.x) == 1.f) {
@@ -114,7 +133,7 @@ void Portal::cutHitbox(size_t baseHitboxIdx) {
 }
 
 void Portal::handleHitboxesCollision(RigidBody &otherRigidBody,
-                                     const Hitbox &otherHitbox,
+                                     size_t otherHitboxIdx,
                                      const sf::Vector2f &normal) {
   // assuming otherRigidBody has 1 hitbox
   const sf::Vector2f hbPos = otherRigidBody.hitboxes[0].getCenterPosition(),
@@ -186,7 +205,7 @@ void Portal::onRbAdd(const events::RigidBody &event) {
 
 void Portal::onRbRemove(const events::RigidBody &event) {
   RigidBody *rb = RBController::get().getRbById(event.rbId);
-  if (rb->objectClass == ObjectClass::portal) {
+  if (rb->objectClass == ObjectClass::portal && rb == this->linkedPortal) {
     Portal *other = dynamic_cast<Portal *>(rb);
     this->link(nullptr);
     other->link(nullptr);

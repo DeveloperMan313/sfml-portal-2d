@@ -43,8 +43,8 @@ void Simulation::processCollisions(
                                 .hb1Idx = k,
                                 .hb2Idx = l,
                                 .normal = normal});
-          rb1.handleHitboxesCollision(rb2, hb2, normal);
-          rb2.handleHitboxesCollision(rb1, hb1, normal);
+          rb1.handleHitboxesCollision(rb2, l, normal);
+          rb2.handleHitboxesCollision(rb1, k, normal);
         }
       }
     }

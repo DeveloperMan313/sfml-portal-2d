@@ -52,7 +52,7 @@ public:
   bool intersects(const RigidBody &other) const;
 
   virtual void handleHitboxesCollision(RigidBody &otherRigidBody,
-                                       const Hitbox &otherHitbox,
+                                       size_t otherHitboxIdx,
                                        const sf::Vector2f &normal);
 
   virtual void handleTeleport(float teleportAngle);

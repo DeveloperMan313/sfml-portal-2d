@@ -20,9 +20,8 @@ public:
 
   void cutHitbox(size_t baseHitboxIdx);
 
-  void handleHitboxesCollision(RigidBody &otherRigidBody,
-                               const Hitbox &otherHitbox,
-                               const sf::Vector2f &normal) override;
+  void handleHitboxesCollision(RigidBody &otherRigidBody, size_t otherHitboxIdx,
+                               const sf::Vector2f &normal) override final;
 
   void setPosition(const sf::Vector2f &position);
 
@@ -37,7 +36,7 @@ private:
 
   void onRbRemove(const events::RigidBody &event);
 
-  const sf::Vector2f facing;
+  sf::Vector2f facing;
   sf::Vector2f singularityPoint;
   const Portal *linkedPortal;
   float teleportAngle;

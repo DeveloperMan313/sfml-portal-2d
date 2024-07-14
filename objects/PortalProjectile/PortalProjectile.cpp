@@ -1,15 +1,19 @@
 #include "PortalProjectile.hpp"
 #include "Math.hpp"
+#include "RBController.hpp"
 #include "RigidBody.hpp"
-#include <SFML/System/Vector2.hpp>
+#include "Wall.hpp"
+#include <cstddef>
 
 namespace game {
 
 const float PortalProjectile::speed = 100.f;
 
-PortalProjectile::PortalProjectile(float movementAngle)
+PortalProjectile::PortalProjectile(PortalColor portalColor_,
+                                   float movementAngle)
     : RigidBody(ObjectClass::portalProjectile, "placeholder", false, 1e-6f,
-                0.f) {
+                0.f),
+      portalColor(portalColor_) {
   this->velocity = Math::rotate({PortalProjectile::speed, 0.f}, movementAngle);
 }
 
@@ -20,10 +24,34 @@ void PortalProjectile::physicsStep(float stepSize) {
 }
 
 void PortalProjectile::handleHitboxesCollision(RigidBody &otherRigidBody,
-                                               const Hitbox &otherHitbox,
+                                               size_t otherHitboxIdx,
                                                const sf::Vector2f &normal) {
   this->isDestroyed = true;
-  // TODO portal creation
+  if (otherRigidBody.objectClass != ObjectClass::wall) {
+    return;
+  }
+  for (size_t i = 0; i < 2; ++i) {
+    RigidBody *rb = RBController::get().getRbByClass(ObjectClass::portal, i);
+    if (rb != nullptr &&
+        dynamic_cast<Portal *>(rb)->color == this->portalColor) {
+      rb->isDestroyed = true;
+    }
+  }
+  const Hitbox otherHitbox = otherRigidBody.hitboxes[otherHitboxIdx];
+  const float portalFacingDirection = Math::projection(
+      this->getPosition() - otherHitbox.getCenterPosition(), normal);
+  const sf::Vector2f portalFacing =
+      normal * static_cast<float>(Math::sign(portalFacingDirection));
+  Portal *portal = new Portal(dynamic_cast<Wall *>(&otherRigidBody),
+                              portalFacing, this->portalColor);
+  // displacement along normal from this pos to a center of otherHitbox
+  const sf::Vector2f deltaPos =
+      normal *
+      Math::projection(otherHitbox.getCenterPosition() - this->getPosition(),
+                       normal);
+  portal->setPosition(this->getPosition() + deltaPos);
+  portal->cutHitbox(otherHitboxIdx);
+  RBController::get().addRigidBody(portal);
 }
 
 } // namespace game

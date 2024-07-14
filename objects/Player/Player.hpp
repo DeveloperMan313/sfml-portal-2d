@@ -13,9 +13,8 @@ public:
 
   void step() override;
 
-  void handleHitboxesCollision(RigidBody &otherRigidBody,
-                               const Hitbox &otherHitbox,
-                               const sf::Vector2f &normal) override;
+  void handleHitboxesCollision(RigidBody &otherRigidBody, size_t otherHitboxIdx,
+                               const sf::Vector2f &normal) override final;
 
   void handleTeleport(float teleportAngle) override;
 

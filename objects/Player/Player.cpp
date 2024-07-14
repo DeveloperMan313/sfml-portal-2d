@@ -41,8 +41,9 @@ void Player::tryToJump() {
 }
 
 void Player::handleHitboxesCollision(RigidBody &otherRigidBody,
-                                     const Hitbox &otherHitbox,
+                                     size_t otherHitboxIdx,
                                      const sf::Vector2f &normal) {
+  const Hitbox otherHitbox = otherRigidBody.hitboxes[otherHitboxIdx];
   if (normal.y == 1.f &&
       this->hitboxes[0].getCenterPosition().y <
           otherHitbox.getCenterPosition().y &&

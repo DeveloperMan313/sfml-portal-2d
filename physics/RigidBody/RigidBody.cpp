@@ -101,7 +101,7 @@ bool RigidBody::intersects(const RigidBody &other) const {
 }
 
 void RigidBody::handleHitboxesCollision(RigidBody &otherRigidBody,
-                                        const Hitbox &otherHitbox,
+                                        size_t otherHitboxIdx,
                                         const sf::Vector2f &normal) {}
 
 void RigidBody::handleTeleport(float teleportAngle) {}
