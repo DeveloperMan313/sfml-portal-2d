@@ -1,14 +1,11 @@
 #pragma once
 
-#include "SFML/Graphics/Rect.hpp"
 #include "SFML/Graphics/RectangleShape.hpp"
 #include "SFML/System/Vector2.hpp"
 
 namespace game {
 
-class RigidBody;
-
-class Hitbox {
+class Hitbox : public sf::RectangleShape {
 public:
   sf::Vector2f activeDirection;
 
@@ -20,21 +17,12 @@ public:
 
   sf::Vector2f getCenterPosition() const;
 
-  void setPosition(const sf::Vector2f &position);
-
-  void setSize(const sf::Vector2f &size);
-
-  void setScale(const sf::Vector2f &scale);
-
   bool intersects(const Hitbox &other) const;
 
   bool isInActiveDirection(const Hitbox &other) const;
 
   bool isInActiveDirection(const Hitbox &other,
                            const sf::Vector2f &referencePoint) const;
-
-  sf::FloatRect getGlobalBounds() const;
-  sf::RectangleShape rect;
 
 private:
   static const float diagonalNormalSlopeEps;

@@ -107,9 +107,8 @@ void Portal::cutHitbox(size_t baseHitboxIdx) {
     this->basePtr->hitboxes.push_back(topHitbox);
     this->basePtr->hitboxes.push_back(bottomHitbox);
     thisHitboxSize = {hitboxBounds.width, thisBounds.height};
-    this->hitboxes[0].rect.setOrigin(
-        {thisHitboxSize.x * 0.5f * (1 - this->facing.x),
-         thisHitboxSize.y * 0.5f});
+    this->hitboxes[0].setOrigin({thisHitboxSize.x * 0.5f * (1 - this->facing.x),
+                                 thisHitboxSize.y * 0.5f});
   }
   if (std::abs(this->facing.y) == 1.f) {
     const float leftHitboxWidth = thisBounds.left - hitboxBounds.left,
@@ -125,7 +124,7 @@ void Portal::cutHitbox(size_t baseHitboxIdx) {
     this->basePtr->hitboxes.push_back(leftHitbox);
     this->basePtr->hitboxes.push_back(rightHitbox);
     thisHitboxSize = {thisBounds.width, hitboxBounds.height};
-    this->hitboxes[0].rect.setOrigin(
+    this->hitboxes[0].setOrigin(
         {thisHitboxSize.x * 0.5f,
          thisHitboxSize.y * 0.5f * (1 - this->facing.y)});
   }
