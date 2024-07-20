@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(PROJECT_DIRS
     base/Logic
     base/Math
+    base/Object
     base/Singleton
     base/UserInput
     events/Emitter
@@ -30,6 +31,7 @@ set(PROJECT_DIRS
 set(PROJECT_SOURCES
     base/Logic/Logic.cpp
     base/Math/Math.cpp
+    base/Object/Object.cpp
     base/Singleton/Singleton.cpp
     base/UserInput/UserInput.cpp
     events/Emitter/Emitter.cpp
