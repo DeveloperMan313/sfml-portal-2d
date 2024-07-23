@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Frame.hpp"
 #include <cstddef>
 
 namespace game {
@@ -9,6 +10,8 @@ enum class ObjectType { simple, rigidBody };
 enum class ObjectClass { cube, player, portal, portalProjectile, wall };
 
 class Object {
+  friend class RBControllerIns;
+
 public:
   const ObjectType objType;
   const ObjectClass objClass;
@@ -21,9 +24,9 @@ public:
 
   virtual void step() = 0;
 
-  virtual void render() const = 0;
+  virtual void render(Frame &frame) const = 0;
 
-  virtual void subscribe() const = 0;
+  virtual void subscribe() = 0;
 
   size_t getId() const;
 

@@ -11,9 +11,10 @@ const float PortalProjectile::speed = 100.f;
 
 PortalProjectile::PortalProjectile(PortalColor portalColor_,
                                    float movementAngle)
-    : RigidBody(ObjectClass::portalProjectile, "placeholder", false, 1e-6f,
-                0.f),
-      portalColor(portalColor_) {
+    : RigidBody(ObjectClass::portalProjectile, false, 1e-6f, 0.f),
+      sprite("placeholder"), portalColor(portalColor_) {
+  this->sprite.setOrigin(this->sprite.getGlobalBounds().getSize() * 0.5f);
+  this->addHitboxFromSprite(this->sprite);
   this->velocity = Math::rotate({PortalProjectile::speed, 0.f}, movementAngle);
 }
 
@@ -23,11 +24,19 @@ void PortalProjectile::physicsStep(float stepSize) {
   this->force = {0.f, 0.f};
 }
 
+void PortalProjectile::render(Frame &frame) const {
+  this->sprite.setPosition(this->getPosition());
+  frame.add(&this->sprite);
+}
+
 void PortalProjectile::handleHitboxesCollision(RigidBody &otherRigidBody,
                                                size_t otherHitboxIdx,
                                                const sf::Vector2f &normal) {
+  if (this->isDestroyed) {
+    return;
+  }
   this->isDestroyed = true;
-  if (otherRigidBody.objectClass != ObjectClass::wall) {
+  if (otherRigidBody.objClass != ObjectClass::wall) {
     return;
   }
   for (size_t i = 0; i < 2; ++i) {

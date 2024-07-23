@@ -3,23 +3,31 @@
 
 namespace game {
 
-Wall::Wall() : RigidBody(ObjectClass::wall, "wall", true, 1.f, 0.9f) {}
+Wall::Wall() : RigidBody(ObjectClass::wall, true, 1.f, 0.9f), sprite("wall") {
+  this->sprite.setOrigin(this->sprite.getGlobalBounds().getSize() * 0.5f);
+  this->addHitboxFromSprite(this->sprite);
+}
 
 void Wall::setScale(const sf::Vector2f &scale) {
-  const sf::Vector2f oldSizeF(this->getTextureRect().getSize());
+  const sf::Vector2f oldSizeF(this->sprite.getTextureRect().getSize());
   const sf::Vector2i newSizeI(oldSizeF.x * scale.x, oldSizeF.y * scale.y);
   sf::IntRect textureRect({0, 0}, newSizeI);
-  this->setTextureRect(textureRect);
+  this->sprite.setTextureRect(textureRect);
   this->RigidBody::setScale(scale);
-  this->setOrigin(sf::Vector2f(textureRect.getSize()) * 0.5f);
+  this->sprite.setOrigin(sf::Vector2f(textureRect.getSize()) * 0.5f);
+  this->resetHitbox();
 }
 
 void Wall::setScale(float x, float y) { this->setScale({x, y}); }
 
 void Wall::resetHitbox() {
   this->hitboxes.clear();
-  hitboxes.push_back(Hitbox(this->getGlobalBounds().getSize(),
-                            this->getOrigin(), this->getPosition()));
+  this->addHitboxFromSprite(this->sprite);
+}
+
+void Wall::render(Frame &frame) const {
+  this->sprite.setPosition(this->getPosition());
+  frame.add(&this->sprite);
 }
 
 } // namespace game

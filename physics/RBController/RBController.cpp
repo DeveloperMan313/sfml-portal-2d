@@ -30,7 +30,7 @@ RigidBody *RBControllerIns::getRbById(size_t id) const {
 RigidBody *RBControllerIns::getRbByClass(ObjectClass objectClass,
                                          size_t number) const {
   for (RigidBody *rb : this->rigidBodies) {
-    if (rb->objectClass == objectClass) {
+    if (rb->objClass == objectClass) {
       if (number == 0) {
         return rb;
       }

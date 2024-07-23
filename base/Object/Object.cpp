@@ -3,10 +3,10 @@
 namespace game {
 
 Object::Object(ObjectClass objClass_)
-    : objType(ObjectType::simple), objClass(objClass_) {}
+    : objType(ObjectType::simple), objClass(objClass_), id(0) {}
 
 Object::Object(ObjectType objType_, ObjectClass objClass_)
-    : objType(objType_), objClass(objClass_) {}
+    : objType(objType_), objClass(objClass_), id(0) {}
 
 size_t Object::getId() const { return this->id; }
 

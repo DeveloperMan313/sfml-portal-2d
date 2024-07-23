@@ -4,6 +4,7 @@
 #include "RigidBody.hpp"
 #include "SFML/System/Clock.hpp"
 #include "SFML/System/Time.hpp"
+#include "Sprite.hpp"
 
 namespace game {
 
@@ -13,6 +14,8 @@ public:
 
   void step() override;
 
+  virtual void render(Frame &frame) const override final;
+
   void handleHitboxesCollision(RigidBody &otherRigidBody, size_t otherHitboxIdx,
                                const sf::Vector2f &normal) override final;
 
@@ -21,6 +24,7 @@ public:
   void subscribe() override;
 
 private:
+  mutable Sprite spritePlayer;
   bool isStanding, isTryingToJump, isGoingLeft, isGoingRight;
   sf::Clock coyoteClock;
   static const sf::Time coyoteTime;

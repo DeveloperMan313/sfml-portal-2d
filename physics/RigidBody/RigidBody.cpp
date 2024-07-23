@@ -1,15 +1,15 @@
 #include "RigidBody.hpp"
+#include "SFML/Graphics/Transformable.hpp"
 #include "SFML/System/Vector2.hpp"
 #include <limits>
 #include <stdexcept>
 
 namespace game {
 
-RigidBody::RigidBody(ObjectClass objectClass_, const std::string &textureName,
-                     bool isStatic_, float mass_, float bounciness_)
-    : Sprite(textureName), id(0), objectClass(objectClass_),
-      isStatic(isStatic_), isDestroyed(false), force({0.f, 0.f}),
-      velocity({0.f, 0.f}), mass(1.f), inverseMass(1.f) {
+RigidBody::RigidBody(ObjectClass objClass, bool isStatic_, float mass_,
+                     float bounciness_)
+    : Object(objClass), isStatic(isStatic_), isDestroyed(false),
+      force({0.f, 0.f}), velocity({0.f, 0.f}), mass(1.f), inverseMass(1.f) {
   if (mass_ <= 0.f) {
     throw std::invalid_argument("mass should be greater than 0");
   }
@@ -19,12 +19,7 @@ RigidBody::RigidBody(ObjectClass objectClass_, const std::string &textureName,
   this->setBounciness(bounciness_);
   *const_cast<float *>(&this->mass) = mass_;
   *const_cast<float *>(&this->inverseMass) = 1.f / mass_;
-  this->setOrigin(this->getGlobalBounds().getSize() * 0.5f);
-  hitboxes.push_back(Hitbox(this->getGlobalBounds().getSize(),
-                            this->getOrigin(), this->getPosition()));
 }
-
-void RigidBody::step() {}
 
 void RigidBody::applyForce(const sf::Vector2f &force) {
   if (this->isStatic) {
@@ -55,7 +50,7 @@ void RigidBody::setBounciness(float bounciness_) {
 float RigidBody::getBounciness() const { return this->bounciness; }
 
 void RigidBody::setPosition(const sf::Vector2f &position) {
-  this->Sprite::setPosition(position);
+  this->sf::Transformable::setPosition(position);
   for (Hitbox &hb : this->hitboxes) {
     hb.setPosition(position);
   }
@@ -100,20 +95,9 @@ bool RigidBody::intersects(const RigidBody &other) const {
   return false;
 }
 
-void RigidBody::handleHitboxesCollision(RigidBody &otherRigidBody,
-                                        size_t otherHitboxIdx,
-                                        const sf::Vector2f &normal) {}
-
-void RigidBody::handleTeleport(float teleportAngle) {}
-
-void RigidBody::subscribe() {}
-
-bool RigidBody::operator==(const RigidBody &other) const {
-  return this->id == other.id;
-}
-
-bool RigidBody::operator!=(const RigidBody &other) const {
-  return this->id != other.id;
+void RigidBody::addHitboxFromSprite(const sf::Sprite &sprite) {
+  hitboxes.push_back(Hitbox(sprite.getGlobalBounds().getSize(),
+                            sprite.getOrigin(), this->getPosition()));
 }
 
 } // namespace game

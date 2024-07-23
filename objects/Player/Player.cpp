@@ -13,9 +13,13 @@ const float Player::moveSpeed = 50.f, Player::moveSharpnessCoef = 1.2f,
             Player::jumpSpeed = 50.f;
 
 Player::Player()
-    : RigidBody(ObjectClass::player, "player", false, 50.f, 0.f),
+    : RigidBody(ObjectClass::player, false, 50.f, 0.f), spritePlayer("player"),
       isStanding(false), isTryingToJump(false), isGoingLeft(false),
-      isGoingRight(false) {}
+      isGoingRight(false) {
+  this->spritePlayer.setOrigin(this->spritePlayer.getGlobalBounds().getSize() *
+                               0.5f);
+  this->addHitboxFromSprite(this->spritePlayer);
+}
 
 void Player::step() {
   if (this->isTryingToJump) {
@@ -31,6 +35,11 @@ void Player::step() {
              this->mass,
          0.f});
   }
+}
+
+void Player::render(Frame &frame) const {
+  this->spritePlayer.setPosition(this->getPosition());
+  frame.add(&this->spritePlayer);
 }
 
 void Player::tryToJump() {
@@ -87,7 +96,8 @@ void Player::handleTeleport(float teleportAngle) {
 
 void Player::subscribe() {
   Emitters::get().keyboard.subscribe(
-      this->id, std::bind(&Player::onKeyboard, this, std::placeholders::_1));
+      this->getId(),
+      std::bind(&Player::onKeyboard, this, std::placeholders::_1));
 }
 
 } // namespace game

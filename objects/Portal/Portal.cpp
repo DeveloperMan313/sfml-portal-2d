@@ -12,9 +12,8 @@ const float Portal::baseCutoffMinGap = 10.f;
 
 Portal::Portal(Wall *basePtr_, const sf::Vector2f &facing_,
                const PortalColor color_)
-    : RigidBody(ObjectClass::portal,
-                (color_ == PortalColor::blue) ? "portalBlue" : "portalRed",
-                true),
+    : RigidBody(ObjectClass::portal, true),
+      sprite((color_ == PortalColor::blue) ? "portalBlue" : "portalRed"),
       basePtr(basePtr_), singularityPoint({0.f, 0.f}), color(color_),
       linkedPortal(nullptr), teleportAngle(0.f) {
   const float facingEps = 1e-6;
@@ -35,21 +34,25 @@ Portal::Portal(Wall *basePtr_, const sf::Vector2f &facing_,
   } else {
     throw std::runtime_error("facing_ should be parallel to axis X or Y");
   }
-  const sf::FloatRect thisBounds = this->getGlobalBounds(),
-                      baseBounds = basePtr_->getGlobalBounds();
+  this->sprite.setOrigin(this->sprite.getGlobalBounds().getSize() * 0.5f);
+  this->addHitboxFromSprite(this->sprite);
+  const sf::FloatRect thisBounds = this->sprite.getGlobalBounds(),
+                      baseBounds = basePtr_->sprite.getGlobalBounds();
   if (std::abs(this->facing.x) == 1.f) {
-    this->setOrigin(this->getOrigin() +
-                    sf::Vector2f((baseBounds.width + thisBounds.width) * 0.5f *
-                                     -this->facing.x,
-                                 0.f));
+    this->sprite.setOrigin(this->sprite.getOrigin() +
+                           sf::Vector2f((baseBounds.width + thisBounds.width) *
+                                            0.5f * -this->facing.x,
+                                        0.f));
   }
   if (std::abs(this->facing.y) == 1.f) {
-    this->setOrigin(this->getOrigin() +
-                    sf::Vector2f((baseBounds.height + thisBounds.width) * 0.5f *
-                                     -this->facing.y,
-                                 0.f));
-    this->rotate(90.f);
+    this->sprite.setOrigin(this->sprite.getOrigin() +
+                           sf::Vector2f((baseBounds.height + thisBounds.width) *
+                                            0.5f * -this->facing.y,
+                                        0.f));
+    this->sprite.rotate(90.f);
   }
+  this->hitboxes.clear();
+  this->addHitboxFromSprite(this->sprite);
 }
 
 Portal::~Portal() {
@@ -62,6 +65,11 @@ Portal::~Portal() {
   }
 }
 
+void Portal::render(Frame &frame) const {
+  this->sprite.setPosition(this->getPosition());
+  frame.add(&this->sprite);
+}
+
 void Portal::cutHitbox(size_t baseHitboxIdx) {
   const Hitbox &baseHitbox = this->basePtr->hitboxes[baseHitboxIdx];
   const sf::Vector2f hitboxPos = baseHitbox.getCenterPosition();
@@ -71,7 +79,7 @@ void Portal::cutHitbox(size_t baseHitboxIdx) {
   float minCenterGap;
   if (std::abs(this->facing.x) == 1.f) {
     minCenterGap =
-        Portal::baseCutoffMinGap + this->getGlobalBounds().height * 0.5f;
+        Portal::baseCutoffMinGap + this->sprite.getGlobalBounds().height * 0.5f;
     this->setPosition(hitboxPos.x - hitboxBounds.width * 0.5f * this->facing.x,
                       std::clamp(this->getPosition().y,
                                  hitboxBounds.top + minCenterGap,
@@ -79,16 +87,17 @@ void Portal::cutHitbox(size_t baseHitboxIdx) {
   }
   if (std::abs(this->facing.y) == 1.f) {
     minCenterGap =
-        Portal::baseCutoffMinGap + this->getGlobalBounds().width * 0.5f;
+        Portal::baseCutoffMinGap + this->sprite.getGlobalBounds().width * 0.5f;
     this->setPosition(
         std::clamp(this->getPosition().x, hitboxBounds.left + minCenterGap,
                    hitboxRight - minCenterGap),
         hitboxPos.y - hitboxBounds.height * 0.5f * this->facing.y);
   }
+  this->sprite.setPosition(this->getPosition());
   this->basePtr->hitboxes.erase(
       std::next(this->basePtr->hitboxes.begin(), baseHitboxIdx));
   const sf::Vector2f thisPos = this->getPosition();
-  const sf::FloatRect thisBounds = this->getGlobalBounds();
+  const sf::FloatRect thisBounds = this->sprite.getGlobalBounds();
   const float thisBottom = thisBounds.top + thisBounds.height,
               thisRight = thisBounds.left + thisBounds.width;
   sf::Vector2f thisHitboxSize;
@@ -107,8 +116,9 @@ void Portal::cutHitbox(size_t baseHitboxIdx) {
     this->basePtr->hitboxes.push_back(topHitbox);
     this->basePtr->hitboxes.push_back(bottomHitbox);
     thisHitboxSize = {hitboxBounds.width, thisBounds.height};
-    this->hitboxes[0].setOrigin({thisHitboxSize.x * 0.5f * (1 - this->facing.x),
-                                 thisHitboxSize.y * 0.5f});
+    this->hitboxes[0].setOrigin(
+        {thisHitboxSize.x * 0.5f * (1.f - this->facing.x),
+         thisHitboxSize.y * 0.5f});
   }
   if (std::abs(this->facing.y) == 1.f) {
     const float leftHitboxWidth = thisBounds.left - hitboxBounds.left,
@@ -126,7 +136,7 @@ void Portal::cutHitbox(size_t baseHitboxIdx) {
     thisHitboxSize = {thisBounds.width, hitboxBounds.height};
     this->hitboxes[0].setOrigin(
         {thisHitboxSize.x * 0.5f,
-         thisHitboxSize.y * 0.5f * (1 - this->facing.y)});
+         thisHitboxSize.y * 0.5f * (1.f - this->facing.y)});
   }
   this->hitboxes[0].setSize(thisHitboxSize);
 }
@@ -149,7 +159,7 @@ void Portal::handleHitboxesCollision(RigidBody &otherRigidBody,
       Math::rotate(singPointRelToHb, this->teleportAngle) - hbPosRelToRb);
   otherRigidBody.velocity =
       Math::rotate(otherRigidBody.velocity, this->teleportAngle);
-  if (otherRigidBody.objectClass != ObjectClass::player) {
+  if (otherRigidBody.objClass != ObjectClass::player) {
     // reset rotation of 2PI to 0 to avoid floating point error
     if (std::abs(otherRigidBody.getRotation() - Math::PI * 2.f) < 1e-6f) {
       otherRigidBody.setRotation(0.f);
@@ -161,7 +171,7 @@ void Portal::handleHitboxesCollision(RigidBody &otherRigidBody,
 }
 
 void Portal::setPosition(const sf::Vector2f &position) {
-  const sf::FloatRect baseBounds = this->basePtr->getGlobalBounds();
+  const sf::FloatRect baseBounds = this->basePtr->sprite.getGlobalBounds();
   this->singularityPoint = position;
   if (std::abs(this->facing.x) == 1.f) {
     this->singularityPoint.x += baseBounds.width * 0.5f * this->facing.x;
@@ -175,9 +185,10 @@ void Portal::setPosition(float x, float y) { this->setPosition({x, y}); }
 
 void Portal::subscribe() {
   Emitters::get().rbAdd.subscribe(
-      this->id, std::bind(&Portal::onRbAdd, this, std::placeholders::_1));
+      this->getId(), std::bind(&Portal::onRbAdd, this, std::placeholders::_1));
   Emitters::get().rbRemove.subscribe(
-      this->id, std::bind(&Portal::onRbRemove, this, std::placeholders::_1));
+      this->getId(),
+      std::bind(&Portal::onRbRemove, this, std::placeholders::_1));
 }
 
 void Portal::link(const Portal *portalPtr) {
@@ -191,11 +202,11 @@ void Portal::link(const Portal *portalPtr) {
 }
 
 void Portal::onRbAdd(const events::RigidBody &event) {
-  if (event.rbId == this->id) {
+  if (event.rbId == this->getId()) {
     return;
   }
   RigidBody *rb = RBController::get().getRbById(event.rbId);
-  if (rb->objectClass == ObjectClass::portal) {
+  if (rb->objClass == ObjectClass::portal) {
     Portal *other = dynamic_cast<Portal *>(rb);
     this->link(other);
     other->link(this);
@@ -204,7 +215,7 @@ void Portal::onRbAdd(const events::RigidBody &event) {
 
 void Portal::onRbRemove(const events::RigidBody &event) {
   RigidBody *rb = RBController::get().getRbById(event.rbId);
-  if (rb->objectClass == ObjectClass::portal && rb == this->linkedPortal) {
+  if (rb->objClass == ObjectClass::portal && rb == this->linkedPortal) {
     Portal *other = dynamic_cast<Portal *>(rb);
     this->link(nullptr);
     other->link(nullptr);

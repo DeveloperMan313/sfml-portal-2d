@@ -1,29 +1,25 @@
 #pragma once
 
 #include "Hitbox.hpp"
+#include "Object.hpp"
+#include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/Transformable.hpp"
 #include "SFML/System/Vector2.hpp"
-#include "Sprite.hpp"
 #include <vector>
 
 namespace game {
 
-enum class ObjectClass { cube, player, portal, portalProjectile, wall };
-
-class RigidBody : public Sprite {
+class RigidBody : public Object, public sf::Transformable {
 public:
-  size_t id;
-  ObjectClass objectClass;
   bool isStatic, isDestroyed;
   sf::Vector2f velocity;
   const float mass, inverseMass;
   std::vector<Hitbox> hitboxes;
 
-  RigidBody(ObjectClass objectClass_, const std::string &textureName,
-            bool isStatic_ = false, float mass_ = 1.f, float bounciness_ = 1.f);
+  RigidBody(ObjectClass objClass, bool isStatic_ = false, float mass_ = 1.f,
+            float bounciness_ = 1.f);
 
   virtual ~RigidBody() = default;
-
-  virtual void step();
 
   void applyForce(const sf::Vector2f &force);
 
@@ -53,18 +49,14 @@ public:
 
   virtual void handleHitboxesCollision(RigidBody &otherRigidBody,
                                        size_t otherHitboxIdx,
-                                       const sf::Vector2f &normal);
+                                       const sf::Vector2f &normal) = 0;
 
-  virtual void handleTeleport(float teleportAngle);
-
-  virtual void subscribe();
-
-  bool operator==(const RigidBody &other) const;
-
-  bool operator!=(const RigidBody &other) const;
+  virtual void handleTeleport(float teleportAngle) = 0;
 
 protected:
   sf::Vector2f force;
+
+  void addHitboxFromSprite(const sf::Sprite &sprite);
 
 private:
   float bounciness;

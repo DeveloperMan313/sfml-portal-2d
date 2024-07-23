@@ -1,4 +1,5 @@
 #include "Renderer.hpp"
+#include "Frame.hpp"
 #include "Textures.hpp"
 
 namespace game {
@@ -29,9 +30,11 @@ void RendererIns::render(const renderModes& renderMode, const std::vector<RigidB
 
 void RendererIns::renderRBs(const std::vector<RigidBody*> &rbs) {
   this->window->clear();
+  Frame frame;
   for (const RigidBody *rb : rbs) {
-    this->window->draw(*rb);
+    rb->render(frame);
   }
+  frame.render(*window);
   this->window->display();
 
 }
