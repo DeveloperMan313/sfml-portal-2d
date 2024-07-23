@@ -14,6 +14,7 @@ set(PROJECT_DIRS
     base/UserInput
     events/Emitter
     events/Emitters
+    graphics/Frame
     graphics/GUI
     graphics/Renderer
     graphics/Sprite
@@ -36,6 +37,7 @@ set(PROJECT_SOURCES
     base/UserInput/UserInput.cpp
     events/Emitter/Emitter.cpp
     events/Emitters/Emitters.cpp
+    graphics/Frame/Frame.cpp
     graphics/GUI/Button.cpp
     graphics/GUI/Menu.cpp
     graphics/Renderer/Renderer.cpp
