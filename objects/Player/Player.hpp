@@ -26,6 +26,7 @@ public:
 private:
   mutable Sprite spritePlayer;
   bool isStanding, isTryingToJump, isGoingLeft, isGoingRight;
+  float lookDirection;
   sf::Clock coyoteClock;
   static const sf::Time coyoteTime;
   static const float moveSpeed, moveSharpnessCoef, jumpSpeed;
