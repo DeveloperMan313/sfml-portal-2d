@@ -32,9 +32,6 @@ void PortalProjectile::render(Frame &frame) const {
 void PortalProjectile::handleHitboxesCollision(RigidBody &otherRigidBody,
                                                size_t otherHitboxIdx,
                                                const sf::Vector2f &normal) {
-  if (this->isDestroyed) {
-    return;
-  }
   this->isDestroyed = true;
   if (otherRigidBody.objClass != ObjectClass::wall) {
     return;
